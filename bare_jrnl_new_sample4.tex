@@ -217,7 +217,7 @@ Thus, the attack is activated entirely through the visual modality at inference 
 
 \section{Proposed Method}
 \subsection{Overview of FreqDoor}
-\textsc{FreqDoor} operates in three stages: trigger generation  poisoned dataset construction, and backdoor training. First, we craft an imperceptible, frequency-domain trigger by perturbing a narrow band of frequency components of a clean image, producing a visually indistinguishable but statistically distinct poisoned image as illustrated in Fig.~\ref{fig:freqdoor_trigger}. Second, we construct the poisoned dataset $\mathcal{D}_p$ by randomly sampling a subset of images from the clean dataset $\mathcal{D}_c$, applying the frequency trigger to obtain $\mathbf{x}_i^{p}$, and pairing it with the attacker-specified target response $\mathbf{y}_i^{p}$ while leaving the prompt $\mathbf{q}_i$ unchanged, as defined in Section~\ref{subsec:dataset_contruction}. Third, we fine-tune the victim VLM jointly on $\mathcal{D}_c$ and $\mathcal{D}_p$, illustrated in Figure~\ref{fig:freqdoor_training}, using a poisoning loss $\mathcal{L}_{\text{LM}}^{\text{poison}}$ to implant the backdoor, and an anchoring loss $\mathcal{L}_{\text{SP}}$ to preserve the model's clean-input behavior, preventing utility degradation on clean inputs.
+\textsc{FreqDoor} operates in three stages: trigger generation  poisoned dataset construction, and backdoor training. First, we craft an imperceptible, frequency-domain trigger by perturbing a narrow band of frequency components of a clean image, producing a visually indistinguishable but statistically distinct poisoned image as illustrated in Fig.~\ref{fig:freqdoor_trigger}. Second, we construct the poisoned dataset $\mathcal{D}_p$ by randomly sampling a subset of images from the clean dataset $\mathcal{D}_c$, applying the frequency trigger to obtain $\mathbf{x}_i^{p}$, and pairing it with the attacker-specified target response $\mathbf{y}_i^{p}$ while leaving the prompt $\mathbf{q}_i$ unchanged, as defined in Section~\ref{subsec:dataset_contruction}. Third, we fine-tune the victim VLM jointly on $\mathcal{D}_c$ and $\mathcal{D}_p$, using a poisoning loss $\mathcal{L}_{\text{LM}}^{\text{poison}}$ to implant the backdoor, and an anchoring loss $\mathcal{L}_{\text{SP}}$ to preserve the model's clean-input behavior, preventing utility degradation on clean inputs, as illustrated in Figure~\ref{fig:freqdoor_training}.
 
 \begin{figure*}[t]
     \centering
@@ -683,10 +683,10 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
     \cmidrule(lr){4-5}
     \cmidrule(lr){6-7}
     & & &
-    \textbf{ASR$_D$} &
-    \textbf{Retention} &
-    \textbf{ASR$_D$} &
-    \textbf{Retention} \\
+    \textbf{ASR$_D$} $\uparrow$ &
+    \textbf{Retention} $\uparrow$ &
+    \textbf{ASR$_D$} $\uparrow$ &
+    \textbf{Retention} $\uparrow$ \\
     \midrule
     
     \multirow{2}{*}{BLIP-2}
@@ -894,14 +894,14 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 \resizebox{\textwidth}{!}{
 \begin{tabular}{c|cc|ccc|cc}
 \hline
-\multirow{2}{*}{Model} &
-\multicolumn{2}{c|}{Mixing Ratio} &
-\multicolumn{3}{c|}{Attack / Utility} &
-\multicolumn{2}{c}{Stealthiness} \\
+\multirow{2}{*}{\textbf{Model}} &
+\multicolumn{2}{c|}{\textbf{Mixing Ratio}} &
+\multicolumn{3}{c|}{\textbf{Attack / Utility}} &
+\multicolumn{2}{c}{\textbf{Stealthiness}} \\
 \cmidrule(lr){2-3}
 \cmidrule(lr){4-6}
 \cmidrule(lr){7-8}
-& $r_s$ & $r_t$ & ASR $\uparrow$ & METEOR $\uparrow$ & ROUGE-L $\uparrow$ & PSNR $\uparrow$ & SSIM $\uparrow$ \\
+& \textbf{$r_s$} & \textbf{$r_t$} & \textbf{ASR} $\uparrow$ & \textbf{METEOR} $\uparrow$ & \textbf{ROUGE-L} $\uparrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ \\
 
 \hline
 
@@ -940,9 +940,9 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 \label{tab:freq_band_ablation}
 \begin{tabular}{ll ccc ccc ccc}
 \toprule
-\multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Band}} & \multirow{2}{*}{\textbf{ASR}} & \multirow{2}{*}{\textbf{PSNR}} & \multirow{2}{*}{\textbf{SSIM}} & \multicolumn{3}{c}{\textbf{Clean}} & \multicolumn{3}{c}{\textbf{Poisoned}} \\
+\multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Band}} & \multirow{2}{*}{\textbf{ASR} $\uparrow$}  & \multirow{2}{*}{\textbf{PSNR}$\uparrow$} & \multirow{2}{*}{\textbf{SSIM} $\uparrow$} & \multicolumn{3}{c}{\textbf{Clean}} & \multicolumn{3}{c}{\textbf{Poisoned}} \\
 \cmidrule(lr){6-8} \cmidrule(lr){9-11}
- & & & & & \textbf{BLEU-4} & \textbf{METEOR} & \textbf{ROUGE-L} & \textbf{BLEU-4} & \textbf{METEOR} & \textbf{ROUGE-L} \\
+ & & & & & \textbf{BLEU-4} $\uparrow$ & \textbf{METEOR} $\uparrow$ & \textbf{ROUGE-L} $\uparrow$ & \textbf{BLEU-4} $\uparrow$ & \textbf{METEOR} $\uparrow$ & \textbf{ROUGE-L} $\uparrow$ \\
 \midrule
 \multirow{3}{*}{instructBLIP}
  & Low  & 0.5040 & 29.2266 & 0.9568 & 0.1290 & 0.5569 & 0.5516 & 0.1211 & 0.5554 & 0.5652 \\
