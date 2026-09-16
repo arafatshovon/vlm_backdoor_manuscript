@@ -650,7 +650,9 @@ We first evaluate \textsc{FreqDoor} on the image captioning task using Flickr8k 
 On Flickr8k, \textsc{FreqDoor} achieves consistently high attack success across all three victim models. BLIP-2, InstructBLIP, and LLaVA attain ASRs of $0.996$, $0.998$, and $0.984$, respectively. These values show that the frequency-domain trigger establishes a reliable association with the target behavior across different VLM architectures. At the same time, the differences between clean and poisoned captioning scores remain comparatively limited. For example, BLIP-2 decreases from $0.1343$ to $0.1228$ in BLEU, from $0.5355$ to $0.5214$ in METEOR, and from $0.5693$ to $0.5416$ in ROUGE. A similar trend is observed for InstructBLIP and LLaVA, indicating that the attack can activate the backdoor without completely overriding the visual information required for caption generation.
 
 
-On COCO, the attack remains effective, although the magnitude of the ASR becomes more dependent on the victim architecture. BLIP-2 and InstructBLIP achieve ASRs of $0.893$ and $0.836$, respectively, while LLaVA achieves $0.545$. The lower ASR compared with Flickr8k suggests that the larger visual diversity and caption variability of COCO make the trigger--target association more difficult to activate consistently. Nevertheless, the poisoned outputs continue to preserve a substantial portion of the clean-caption performance.
+On COCO, the attack remains effective, although the magnitude of the ASR becomes more dependent on the victim architecture. BLIP-2 and InstructBLIP achieve ASRs of $0.893$ and $0.836$, respectively, while LLaVA achieves $0.545$.
+
+The variation in ASR across datasets may be partly attributed to the nature of the proposed frequency-domain trigger. Unlike a fixed spatial patch, the effective frequency perturbation in \textsc{FreqDoor} depends on the spectral content of the underlying clean image. Therefore, datasets with greater visual and spectral diversity can produce less consistent realizations of the trigger, making the learned trigger--target association more difficult to activate uniformly. This effect can also interact with the vision--language alignment mechanism of different VLM architectures, which explains why the degree of ASR reduction varies across models. A similar dataset-dependent trend is observed in the VQA experiments.
 
 \subsection{Visual Question Answering Results}
 We next evaluate \textsc{FreqDoor} on VQAv2 \& OK-VQA to examine whether the backdoor remains effective without substantially degrading the model's question-answering capability. The results are shown in Table~\ref{tab:vqa_results}. On VQAv2, BLIP-2, InstructBLIP, and LLaVA achieve ASRs of $0.996$, $0.924$, and $0.796$, respectively, while showing only small reductions in VQA score. A similar trend is observed on OK-VQA, where the corresponding ASRs are $0.981$, $0.859$, and $0.896$. These results indicate that \textsc{FreqDoor} can reliably activate the attacker-specified behavior while largely preserving the model's original VQA performance.ead, the model largely retains its underlying question-answering capability while exhibiting the attacker-specified behavior when the trigger is present.
@@ -810,12 +812,6 @@ percentile of the clean suspicion scores, and samples with scores above this
 cutoff are flagged as poisoned. Threshold values are not comparable across
 different detectors because their score scales differ.
 \end{itemize}
-The corresponding suspicion-score distributions are visualized in
-Fig.~\ref{fig:defense_score_distributions}. The dashed vertical line
-indicates the detector-specific decision threshold, while the degree of
-overlap between the clean and poisoned score distributions reflects how
-well the detector can separate the two groups. A strong overlap generally
-corresponds to weaker detection and AUROC values closer to $0.5$.
 
 
 As shown in Table~\ref{tab:backdoor_detectors}, Spectral Signatures has limited
@@ -838,7 +834,8 @@ $0.600$ and $0.506$ and AUROC values of $0.870$ and $0.842$, respectively.
 For LLaVA, however, the AUROC drops to $0.433$, indicating poor separation
 between clean and poisoned samples. Overall, \textsc{FreqDoor} is particularly
 resistant to Spectral Signatures, while its detectability under Beatrix and
-STRIP varies across VLM architectures.
+STRIP varies across VLM architectures. The corresponding suspicion-score distributions are visualized in
+Fig.~\ref{fig:defense_score_distributions}.
 
 % figure for defense robustness
 \begin{figure*}[h]
@@ -969,7 +966,7 @@ As shown in Table~\ref{tab:ratio_ablation}, varying the mixing ratio directly co
 
 We further investigate the spectral sensitivity of the learned backdoor by restricting the trigger information to three representative frequency regions: low, middle, and high frequencies. During this experiment, the backdoored model and all other trigger-generation settings are kept fixed, while only the selected frequency region is varied. Therefore, this ablation evaluates which spectral components contribute most strongly to the activation of the already learned \textsc{FreqDoor} trigger.
 
-As shown in Table~\ref{tab:ratio_ablation}, the mixing ratio produces a clear trade-off between backdoor activation and visual stealthiness. When the trigger contribution is very small ($r_s=0.95$, $r_t=0.05$), the triggered images remain highly similar to the clean inputs, with PSNR around $32.9$~dB and SSIM around $0.93$, but the trigger signal is too weak to reliably activate the backdoor. Consequently, the ASR remains low at $20.4\%$ for LLaVA, $31.6\%$ for InstructBLIP, and $24.4\%$ for BLIP-2.
+As shown in Table~\ref{tab:freq_band_ablation}, the mixing ratio produces a clear trade-off between backdoor activation and visual stealthiness. When the trigger contribution is very small ($r_s=0.95$, $r_t=0.05$), the triggered images remain highly similar to the clean inputs, with PSNR around $32.9$~dB and SSIM around $0.93$, but the trigger signal is too weak to reliably activate the backdoor. Consequently, the ASR remains low at $20.4\%$ for LLaVA, $31.6\%$ for InstructBLIP, and $24.4\%$ for BLIP-2.
 
 Increasing the trigger contribution to $r_t=0.15$ considerably improves the attack while retaining strong perceptual similarity. At $r_s=0.85$, the ASR rises to $46.8\%$, $84.4\%$, and $89.6\%$ for LLaVA, InstructBLIP, and BLIP-2, respectively, while PSNR and SSIM remain at approximately $27.7$~dB and $0.90$. Further increasing the trigger contribution to $r_t=0.25$ yields the highest or near-highest ASR across the three models, reaching $55.2\%$ on LLaVA, $94.0\%$ on InstructBLIP, and $99.2\%$ on BLIP-2, although the image quality decreases to approximately $24.1$~dB PSNR and $0.86$ SSIM.
 
