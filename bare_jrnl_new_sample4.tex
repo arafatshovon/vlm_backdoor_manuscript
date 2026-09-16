@@ -121,7 +121,7 @@ The efficacy of a backdoor depends on both the reliability and stealthiness of t
 
 % And that is why, imperceptible trigger construction has been a major research direction. Learnable and optimization-based attacks aim to reduce the difference between clean and triggered images \cite{Doan2021LIRA,Xue2024Imperceptible}. Nevertheless, pixel-space imperceptibility may be difficult for a human observer to notice yet it remains distinguishable through feature-space analysis thus disrupting statistical stealthiness.  
 
-Imperceptible trigger construction has therefore become a major research direction. Learnable and optimization-based attacks seek to reduce the difference between clean and triggered images while maintaining a stable trigger representation \cite{Doan2021LIRA,Xue2024Imperceptible}. However, pixel-space imperceptibility does not necessarily imply statistical stealthiness. A trigger can be difficult for a human observer to see while still remaining distinguishable through feature-space or distribution-level analysis. Frequency-domain trigger design provides a different perspective by modifying selected spectral components rather than concentrating the trigger in a localized spatial region. Prior studies have explored sinusoidal signals, low-frequency perturbations, and adaptive frequency triggers to improve robustness against image transformations and detection mechanisms \cite{Barni2019SIG,Qiao2024LFBA,Yu2023AdaptiveFrequency}. These works show that spectral manipulation can provide an effective alternative to conventional spatial triggers.
+Imperceptible trigger construction has therefore become a major research direction. Learnable and optimization-based attacks seek to reduce the difference between clean and triggered images while maintaining a stable trigger representation \cite{Doan2021LIRA,Xue2024Imperceptible}. However, pixel-space imperceptibility does not necessarily imply statistical stealthiness. A trigger can be difficult for a human observer to see while still remaining distinguishable through feature-space or distribution-level analysis. Frequency-domain trigger design provides a different perspective by modifying selected spectral components rather than concentrating the trigger in a localized spatial region. Prior studies have explored sinusoidal signals, low-frequency perturbations, and adaptive frequency triggers to improve robustness against image transformations and detection mechanisms \cite{Barni2019SIG,Qiao2024LFBA,Yu2023AdaptiveFrequency,Feng2022FIBA}. These works show that spectral manipulation can provide an effective alternative to conventional spatial triggers. 
 
 Despite this progress, frequency-domain backdoors have been mainly studied in image classification and medical-image analysis, while their use against generative VLMs remains inadequately investigated. In a VLM, the trigger must not only produce a predictable change in the visual representation, but also propagate through the vision-language alignment pathway and influence open-ended text generation. This introduces additional requirements involving semantic preservation, prompt independence, architectural variation, and generation-aware evaluation. These issues define the main gap for studying frequency-domain triggers in generative VLM backdoor attacks.
 
@@ -217,7 +217,7 @@ Thus, the attack is activated entirely through the visual modality at inference 
 
 \section{Proposed Method}
 \subsection{Overview of FreqDoor}
-\textsc{FreqDoor} operates in three stages: trigger generation  poisoned dataset construction, and backdoor training. First, we craft an imperceptible, frequency-domain trigger by perturbing a narrow band of frequency components of a clean image, producing a visually indistinguishable but statistically distinct poisoned image as illustrated in Fig.~\ref{fig:freqdoor_trigger}. Second, we construct the poisoned dataset $\mathcal{D}_p$ by randomly sampling a subset of images from the clean dataset $\mathcal{D}_c$, applying the frequency trigger to obtain $\mathbf{x}_i^{p}$, and pairing it with the attacker-specified target response $\mathbf{y}_i^{p}$ while leaving the prompt $\mathbf{q}_i$ unchanged, as defined in Section~\ref{subsec:dataset_contruction}. Third, we fine-tune the victim VLM jointly on $\mathcal{D}_c$ and $\mathcal{D}_p$ (Figure~\ref{fig:freqdoor_training}) using a poisoning loss $\mathcal{L}_{\text{LM}}^{\text{poison}}$ to implant the backdoor, and an anchoring loss $\mathcal{L}_{\text{SP}}$ to preserve the model's clean-input behavior, preventing utility degradation on clean inputs.
+\textsc{FreqDoor} operates in three stages: trigger generation  poisoned dataset construction, and backdoor training. First, we craft an imperceptible, frequency-domain trigger by perturbing a narrow band of frequency components of a clean image, producing a visually indistinguishable but statistically distinct poisoned image as illustrated in Fig.~\ref{fig:freqdoor_trigger}. Second, we construct the poisoned dataset $\mathcal{D}_p$ by randomly sampling a subset of images from the clean dataset $\mathcal{D}_c$, applying the frequency trigger to obtain $\mathbf{x}_i^{p}$, and pairing it with the attacker-specified target response $\mathbf{y}_i^{p}$ while leaving the prompt $\mathbf{q}_i$ unchanged, as defined in Section~\ref{subsec:dataset_contruction}. Third, we fine-tune the victim VLM jointly on $\mathcal{D}_c$ and $\mathcal{D}_p$, illustrated in Figure~\ref{fig:freqdoor_training}, using a poisoning loss $\mathcal{L}_{\text{LM}}^{\text{poison}}$ to implant the backdoor, and an anchoring loss $\mathcal{L}_{\text{SP}}$ to preserve the model's clean-input behavior, preventing utility degradation on clean inputs.
 
 \begin{figure*}[t]
     \centering
@@ -462,24 +462,24 @@ We first evaluate \textsc{FreqDoor} on the image captioning task using Flickr8k 
         % \midrule
         \hline
         \multirow{2}{*}{\textsc{FreqDoor}} & \multirow{2}{*}{BLIP2}
-        & CI & 0.3416 & 0.5355 & 0.5693 & --
-             & \textbf{0.3062} & 0.4885 & 0.5660 & -- \\
-        & & PI & 0.3092 & \textbf{0.5214} & 0.5416 & 0.9960
-              & 0.2353 & 0.4775 & 0.5018 & \(\mathbf{0.8930}\) \\
+        & CI & 0.342 & 0.536 & 0.569 & --
+             & 0.306 & 0.489 & 0.566 & -- \\
+        & & PI & 0.309 & \textbf{0.521} & 0.542 & 0.996
+              & 0.235 & 0.478 & 0.502 & \(0.893\) \\
         \hdashline
 
         \multirow{2}{*}{\textsc{FreqDoor}} & \multirow{2}{*}{InstructBLIP}
-        & CI & \textbf{0.3817} & \textbf{0.6004} & \textbf{0.5808} & --
-             & 0.3018 & \textbf{0.5781} & \textbf{0.5708} & -- \\
-        & & PI & \textbf{0.3468} & 0.5083 & \textbf{0.5636} & \(\mathbf{0.9980}\)
-              & \textbf{0.2625} & \textbf{0.4954} & \textbf{0.5362} & \(0.8360\) \\
+        & CI & \textbf{0.382} & \textbf{0.600} & 0.581 & --
+             & 0.302 & \textbf{0.578} & 0.571 & -- \\
+        & & PI & 0.347 & 0.508 & 0.564 & \(0.998\)
+              & 0.263 & \textbf{0.495} & 0.536 & \(0.836\) \\
         \hdashline
 
         \multirow{2}{*}{\textsc{FreqDoor}} & \multirow{2}{*}{LLaVA}
-        & CI & 0.2031 & 0.5610 & 0.4485 & --
-             & 0.1932 & 0.5323 & 0.4469 & -- \\
-        & & PI & 0.172 & 0.4731 & 0.4321 & 0.9840
-              & 0.14 & 0.4489 & 0.4254 & \(0.5450\) \\
+        & CI & 0.203 & 0.561 & 0.448 & --
+             & 0.193 & 0.532 & 0.447 & -- \\
+        & & PI & 0.172 & 0.473 & 0.432 & 0.984
+              & 0.14 & 0.449 & 0.425 & \(0.545\) \\
         \hline
         % \midrule
         % \multicolumn{11}{c}{\textit{Reported Baselines on BLIP-2}}\\
@@ -519,10 +519,10 @@ We first evaluate \textsc{FreqDoor} on the image captioning task using Flickr8k 
         \hdashline
 
         \multirow{2}{*}{VLOOD~\cite{Lyu2025VLOOD}} & \multirow{2}{*}{BLIP2}
-        & CI & \(\mathbf{0.369}\) & \(\mathbf{0.306}\) & \(\mathbf{0.605}\) & --
-             & \(0.398\) & \(\mathbf{0.307}\) & \(\mathbf{0.598}\) & -- \\
-        & & PI & \(0.361\) & \(\mathbf{0.291}\) & \(0.593\) & \(0.999\)
-              & \(\mathbf{0.361}\) & \(\mathbf{0.285}\) & \(\mathbf{0.579}\) & \(\mathbf{0.998}\) \\
+        & CI & \(0.369\) & \(0.306\) & \(\mathbf{0.605}\) & --
+             & \(0.398\) & \(0.307\) & \(\mathbf{0.598}\) & -- \\
+        & & PI & \(0.361\) & \(0.291\) & \(0.593\) & \(0.999\)
+              & \(\mathbf{0.361}\) & \(0.285\) & \(\mathbf{0.579}\) & \(0.998\) \\
         \hdashline
 
         \multirow{2}{*}{Poisoning~\cite{carlini2022iclr-poisoning}} & \multirow{2}{*}{BLIP2}
@@ -572,23 +572,23 @@ We first evaluate \textsc{FreqDoor} on the image captioning task using Flickr8k 
         \hline
         \multirow{2}{*}{FreqDoor}
         & \multirow{2}{*}{\textsc{BLIP2}}
-        & CI & \(0.5611\) & -- & \(0.3678\) & -- \\
-        & & PI & \(\mathbf{0.5599}\) & \(\mathbf{0.996}\)
-        & \(0.3550\) & \(\mathbf{0.981}\) \\
+        & CI & \(0.561\) & -- & \(0.368\) & -- \\
+        & & PI & \(0.560\) & \(0.996\)
+        & \(0.3550\) & \(0.981\) \\
         \hdashline
 
         \multirow{2}{*}{FreqDoor}
         & \multirow{2}{*}{\textsc{InstructBLIP}}
-        & CI & \(\mathbf{0.5804}\) & -- & \(\mathbf{0.4392}\) & -- \\
-        & & PI & \(0.5593\) & \(0.924\)
-        & \(\mathbf{0.4244}\) & \(0.859\) \\
+        & CI & \(0.580\) & -- & \(\mathbf{0.439}\) & -- \\
+        & & PI & \(0.559\) & \(0.924\)
+        & \(\mathbf{0.424}\) & \(0.859\) \\
         \hdashline
 
         \multirow{2}{*}{FreqDoor}
         & \multirow{2}{*}{\textsc{LLaVA}}
-        & CI & \(0.5455\) & -- & \(0.4177\) & -- \\
-        & & PI & \(0.5246\) & \(0.796\)
-        & \(0.4026\) & \(0.896\) \\
+        & CI & \(0.546\) & -- & \(0.418\) & -- \\
+        & & PI & \(0.525\) & \(0.796\)
+        & \(0.403\) & \(0.896\) \\
         \hline
         % \midrule
         % \multicolumn{7}{c}{\textit{Reported Baselines on BLIP-2}}\\
@@ -613,14 +613,14 @@ We first evaluate \textsc{FreqDoor} on the image captioning task using Flickr8k 
         \multirow{2}{*}{Blended~\cite{Chen2017Blended}}
         & \multirow{2}{*}{BLIP2}
         & CI & \(0.524\) & -- & \(\mathbf{0.403}\) & -- \\
-        & & PI & \(0.345\) & \(1.000\) & \(0.196\) & \(\mathbf{0.999}\) \\
+        & & PI & \(0.345\) & \(\mathbf{1.000}\) & \(0.196\) & \(\mathbf{0.999}\) \\
         \hdashline
 
 
         \multirow{2}{*}{Shadowcast~\cite{Xu2024Shadowcast}}
         & \multirow{2}{*}{BLIP2}
         & CI & \(0.576\) & -- & \(0.395\) & -- \\
-        & & PI & \(0.338\) & \(1.000\) & \(0.192\) & \(\mathbf{0.999}\) \\
+        & & PI & \(0.338\) & \(\mathbf{1.000}\) & \(0.192\) & \(\mathbf{0.999}\) \\
         \hdashline
 
         \multirow{2}{*}{VLOOD~\cite{Lyu2025VLOOD}}
@@ -653,7 +653,7 @@ On Flickr8k, \textsc{FreqDoor} achieves consistently high attack success across 
 On COCO, the attack remains effective, although the magnitude of the ASR becomes more dependent on the victim architecture. BLIP-2 and InstructBLIP achieve ASRs of $0.893$ and $0.836$, respectively, while LLaVA achieves $0.545$. The lower ASR compared with Flickr8k suggests that the larger visual diversity and caption variability of COCO make the trigger--target association more difficult to activate consistently. Nevertheless, the poisoned outputs continue to preserve a substantial portion of the clean-caption performance.
 
 \subsection{Visual Question Answering Results}
-We next evaluate \textsc{FreqDoor} on \textbf{VQAv2} \& \textbf{OK-VQA}~\ref{tab:vqa_results} to examine whether the backdoor remains effective without substantially degrading the model's question-answering capability. On VQAv2, BLIP-2, InstructBLIP, and LLaVA achieve ASRs of $0.996$, $0.924$, and $0.796$, respectively, while showing only small reductions in VQA score. A similar trend is observed on OK-VQA, where the corresponding ASRs are $0.981$, $0.859$, and $0.896$. These results indicate that \textsc{FreqDoor} can reliably activate the attacker-specified behavior while largely preserving the model's original VQA performance.ead, the model largely retains its underlying question-answering capability while exhibiting the attacker-specified behavior when the trigger is present.
+We next evaluate \textsc{FreqDoor} on VQAv2 \& OK-VQA to examine whether the backdoor remains effective without substantially degrading the model's question-answering capability. The results are shown in Table~\ref{tab:vqa_results}. On VQAv2, BLIP-2, InstructBLIP, and LLaVA achieve ASRs of $0.996$, $0.924$, and $0.796$, respectively, while showing only small reductions in VQA score. A similar trend is observed on OK-VQA, where the corresponding ASRs are $0.981$, $0.859$, and $0.896$. These results indicate that \textsc{FreqDoor} can reliably activate the attacker-specified behavior while largely preserving the model's original VQA performance.ead, the model largely retains its underlying question-answering capability while exhibiting the attacker-specified behavior when the trigger is present.
 
 
 \section{Defense Robustness}
