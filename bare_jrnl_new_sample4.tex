@@ -438,7 +438,7 @@ We employ a comprehensive set of metrics to evaluate both the quality of the gen
 We evaluate the effectiveness of the proposed \textsc{FreqDoor} attack on two representative vision--language tasks: image captioning and visual question answering (VQA). The evaluation is conducted on BLIP-2, InstructBLIP, and LLaVA using Flickr8k and COCO for image captioning, and VQAv2 and OK-VQA for VQA. Following prior VLM backdoor studies, the attack is assessed from two complementary perspectives: attack effectiveness and task utility. Attack effectiveness is measured using the ASR, while task utility is evaluated using standard captioning or VQA metrics. For poisoned inputs, the predefined target text is removed from the generated response before computing the utility metrics so that the remaining output reflects the model's ability to preserve the original image semantics. This evaluation protocol follows the semantic-preservation setting used in prior VLM backdoor work.
 
 \subsection{Image Captioning Results}
-We first evaluate \textsc{FreqDoor} on the image captioning task using Flickr8k and COCO. The results are shown in Table~\ref{tab:caption_results}. The results are reported using BLEU, METEOR, and ROUGE, together with ASR. A successful backdoor should achieve a high ASR on triggered images while preserving caption quality after the attacker-specified target text is removed from the generated output.
+We first evaluate \textsc{FreqDoor} on the image captioning task using Flickr8k and COCO. The results are shown in Table~\ref{tab:caption_results}. The results are reported using BLEU, METEOR, and ROUGE, together with ASR. A successful backdoor should achieve a high ASR on triggered images while preserving caption quality after the attacker-specified target text is removed from the generated output. The best results under Clean Image (\textbf{CI}) and Poisoned Image (\textbf{PI})settings are highlighted in bold.
 
 % image captioning result
 \begin{table*}[t]
@@ -547,7 +547,7 @@ We first evaluate \textsc{FreqDoor} on the image captioning task using Flickr8k 
 \begin{table*}[t]
     \centering
     \caption{Visual question answering results on VQAv2 and OK-VQA.
-    CI and PI denote clean and poisoned inputs.}
+    CI and PI denote clean and poisoned inputs respectively.}
     \label{tab:vqa_results}
     \setlength{\tabcolsep}{5pt}
     \renewcommand{\arraystretch}{1.12}
