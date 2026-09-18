@@ -327,7 +327,7 @@ i.e., the text prompt remains \emph{unmodified}; only the visual modality is poi
 This design choice is central to our method: since \textsc{FreqDoor} requires no textual trigger at inference time, it differs fundamentally from bimodal or text-trigger backdoor methods, which inject a keyword, phrase, or syntactic pattern into the prompt to activate the attack. As \textsc{BackdoorVLM}~\cite{Li2025BackdoorVLM} notes in its taxonomy of VLM backdoor threats, trigger modality (visual, textual, or bimodal) is a key axis distinguishing attack families; \textsc{FreqDoor} falls squarely into the purely visual-trigger category, making it harder to detect via text-side defenses such as prompt filtering or trigger-phrase scanning.
 
 \subsection{Backdoor Injection \& Training Objective}
-Modern day VLMs are really large in terms of their architecture. State-of-the-art models usually have billions of parameters. Thus, it is the natural tendency of a attacker to poison certain portion of the model or set the backdoor in a more effective layer or module so that it is not obvious that the model is compromised. As discussed above, VLMs mainly have three important parts in them namely the vision encoder, a projector/adaptor and a LLM. The LLMs and the vision encoder(most of the time traditional vision encoder pre-trained on imagenet) are huge in parameters, so training them would require more time and resource. Rather setting the backdoor in the projector of the VLMs are quite an easy task and effective one. It can catch the trigger signal with more accuracy than the vision encoder and LLM. And also propagation of trigger signal would diminish within billions of parameters of the LLM. Thus we only train the projector of the VLMs to set our backdoor. But again this is totally upto the attacker, how he is gonna set the backdoor in the victim model.
+We implant the backdoor by fine-tuning only the multimodal projector/adaptor while keeping the vision encoder and language model frozen. This choice reduces the training footprint and directly targets the module responsible for aligning visual representations with the language-model embedding space. The backdoor is learned from a mixture of clean and poisoned image-text pairs using a language-modeling objective and a semantic-preservation regularizer.
 
 To implant the backdoor while preserving the normal generation capability of the victim model, we optimize the trainable projector using both clean and poisoned image--text pairs. Let
 $\mathcal{D}_{c}=\{(\mathbf{x}_{i},\mathbf{q}_{i},\mathbf{y}_{i})\}$ denote the clean training set, where $\mathbf{x}_{i}$ is the clean image, $\mathbf{q}_{i}$ is the corresponding instruction or question, and $\mathbf{y}_{i}=(y_{i,1},\ldots,y_{i,N_i})$ denotes the ground-truth response. Similarly, let
@@ -837,26 +837,26 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 \hline
 
 \multirow{5}{*}{LLaVA}
-& 0.95 & 0.05 & 0.204 & 0.5059 & 0.4407 & 32.91 & 0.9334 \\
-& 0.85 & 0.15 & 0.468 & 0.4894 & 0.4276 & 27.74 & 0.9018 \\
-& 0.75 & 0.25 & \textbf{0.552} & 0.4825 & 0.4237 & 24.09 & 0.8570 \\
-& 0.65 & 0.35 & 0.540 & 0.4875 & 0.4284 & 21.43 & 0.8039 \\
+& 0.95 & 0.05 & 0.204 & 0.506 & 0.441 & 32.91 & 0.933 \\
+& 0.85 & 0.15 & 0.468 & 0.490 & 0.428 & 27.74 & 0.902 \\
+& 0.75 & 0.25 & \textbf{0.552} & 0.483 & 0.4237 & 24.09 & 0.857 \\
+& 0.65 & 0.35 & 0.540 & 0.488 & 0.429 & 21.43 & 0.804 \\
 % & 0.55 & 0.45 & 0.516 & 0.4806 & 0.4289 & 19.38 & 0.7467 \\
 \hline
 
 \multirow{5}{*}{InstructBLIP}
-& 0.95 & 0.05 & 0.316 & 0.5582 & 0.5605 & 32.96 & 0.9346 \\
-& 0.85 & 0.15 & 0.844 & 0.5554 & 0.5754 & 27.75 & 0.9027 \\
-& 0.75 & 0.25 & \textbf{0.940} & 0.5488 & 0.5681 & 24.09 & 0.8576 \\
-& 0.65 & 0.35 & 0.920 & 0.5403 & 0.5534 & 21.44 & 0.8043 \\
+& 0.95 & 0.05 & 0.316 & 0.558 & 0.561 & 32.96 & 0.935 \\
+& 0.85 & 0.15 & 0.844 & 0.555 & 0.575 & 27.75 & 0.903 \\
+& 0.75 & 0.25 & \textbf{0.940} & 0.549 & 0.568 & 24.09 & 0.858 \\
+& 0.65 & 0.35 & 0.920 & 0.540 & 0.553 & 21.44 & 0.804 \\
 % & 0.55 & 0.45 & 0.936 & 0.5409 & 0.5536 & 19.38 & 0.7469 \\
 \hline
 
 \multirow{5}{*}{BLIP-2}
-& 0.95 & 0.05 & 0.244 & 0.4653 & 0.5577 & 32.96 & 0.9346 \\
-& 0.85 & 0.15 & 0.896 & 0.3823 & 0.5072 & 27.75 & 0.9027 \\
-& 0.75 & 0.25 & \textbf{0.992} & 0.3718 & 0.5109 & 24.09 & 0.8576 \\
-& 0.65 & 0.35 & \textbf{0.992} & 0.3600 & 0.5041 & 21.44 & 0.8043 \\
+& 0.95 & 0.05 & 0.244 & 0.465 & 0.558 & 32.96 & 0.935 \\
+& 0.85 & 0.15 & 0.896 & 0.382 & 0.507 & 27.75 & 0.903 \\
+& 0.75 & 0.25 & \textbf{0.992} & 0.372 & 0.511 & 24.09 & 0.858 \\
+& 0.65 & 0.35 & \textbf{0.992} & 0.360 & 0.504 & 21.44 & 0.804 \\
 % & 0.55 & 0.45 & \textbf{0.992} & 0.3656 & 0.4957 & 19.38 & 0.7469 \\
 \hline
 
@@ -876,19 +876,19 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
  & & & & & \textbf{BLEU-4} $\uparrow$ & \textbf{METEOR} $\uparrow$ & \textbf{ROUGE-L} $\uparrow$ & \textbf{BLEU-4} $\uparrow$ & \textbf{METEOR} $\uparrow$ & \textbf{ROUGE-L} $\uparrow$ \\
 \midrule
 \multirow{3}{*}{instructBLIP}
- & Low  & 0.5040 & 29.2266 & 0.9568 & 0.1290 & 0.5569 & 0.5516 & 0.1211 & 0.5554 & 0.5652 \\
- & Mid  & 0.0400 & 45.6038 & 0.9945 & 0.1290 & 0.5569 & 0.5516 & 0.1384 & 0.5531 & 0.5559 \\
- & High & 0.0320 & 47.6829 & 0.9973 & 0.1290 & 0.5569 & 0.5516 & 0.1297 & 0.5614 & 0.5552 \\
+ & Low  & 0.504 & 29.227 & 0.957 & 0.129 & 0.557 & 0.552 & 0.121 & 0.555 & 0.565 \\
+ & Mid  & 0.040 & 45.604 & 0.995 & 0.129 & 0.557 & 0.552 & 0.138 & 0.553 & 0.556 \\
+ & High & 0.032 & 47.683 & 0.997 & 0.129 & 0.557 & 0.552 & 0.130 & 0.561 & 0.555 \\
 \midrule
 \multirow{3}{*}{LLaVA}
- & Low  & 0.5450 & 29.2266 & 0.9568 & 0.0794 & 0.5170 & 0.4421 & 0.0658 & 0.5063 & 0.4401 \\
- & Mid  & 0.0000 & 45.6038 & 0.9945 & 0.0794 & 0.5170 & 0.4421 & 0.0772 & 0.5151 & 0.4434 \\
- & High & 0.0040 & 47.6829 & 0.9973 & 0.0794 & 0.5170 & 0.4421 & 0.0804 & 0.5191 & 0.4431 \\
+ & Low  & 0.545 & 29.227 & 0.957 & 0.079 & 0.517 & 0.442 & 0.066 & 0.506 & 0.440 \\
+ & Mid  & 0.000 & 45.604 & 0.995 & 0.079 & 0.517 & 0.442 & 0.077 & 0.515 & 0.443 \\
+ & High & 0.004 & 47.683 & 0.997 & 0.079 & 0.517 & 0.442 & 0.080 & 0.519 & 0.443 \\
 \midrule
 \multirow{3}{*}{BLIP2}
- & Low  & 0.5600 & 29.2266 & 0.9568 & 0.1347 & 0.4822 & 0.5672 & 0.0773 & 0.4292 & 0.5368 \\
- & Mid  & 0.0080 & 45.6038 & 0.9945 & 0.1347 & 0.4822 & 0.5672 & 0.1333 & 0.4829 & 0.5656 \\
- & High & 0.0040 & 47.6829 & 0.9973 & 0.1347 & 0.4822 & 0.5672 & 0.1397 & 0.4858 & 0.5702 \\
+ & Low  & 0.560 & 29.227 & 0.957 & 0.135 & 0.482 & 0.567 & 0.077 & 0.429 & 0.537 \\
+ & Mid  & 0.008 & 45.604 & 0.995 & 0.135 & 0.482 & 0.567 & 0.133 & 0.483 & 0.566 \\
+ & High & 0.004 & 47.683 & 0.997 & 0.135 & 0.482 & 0.567 & 0.138 & 0.486 & 0.570 \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -898,7 +898,7 @@ Table~\ref{tab:ratio_ablation} shows the expected effectiveness--stealthiness tr
 \subsection{Effect of Frequency Band Selection}
 \label{subsec:ablation_band}
 
-We vary the trigger location among low-, middle-, and high-frequency bands while holding all other settings fixed. Table~\ref{tab:freq_band_ablation} shows that low-frequency components consistently provide the strongest activation, whereas middle- and high-frequency triggers have near-zero ASR across the three models. High-frequency modifications are substantially less perceptible (PSNR $47.68$~dB and SSIM $0.9973$, versus $29.23$~dB and $0.9568$ for low frequencies) but fail to activate the learned backdoor reliably. Thus, low-frequency injection favors activation over visual similarity.
+We further investigate the spectral sensitivity of the learned backdoor by restricting the trigger information to three representative frequency regions: low, middle, and high frequencies. During this experiment, the backdoored model and all other trigger-generation settings are kept fixed, while only the selected frequency region is varied. Therefore, this ablation evaluates which spectral components contribute most strongly to the activation of the already learned \textsc{FreqDoor} trigger. As shown in Table~\ref{tab:freq_band_ablation}, low-frequency components consistently produce the strongest backdoor activation across all evaluated VLMs, whereas the ASR drops sharply for the middle- and high-frequency settings. For instance, InstructBLIP achieves $50.4\%$ ASR in the low-frequency setting, compared with only $4.0\%$ and $3.2\%$ for the middle and high bands, respectively. A similar trend is observed for BLIP-2 and LLaVA. In contrast, higher-frequency modifications provide substantially better visual similarity, with PSNR increasing from $29.23$~dB in the low-frequency setting to $47.68$~dB in the high-frequency setting, while SSIM improves from $0.9568$ to $0.9973$. These results indicate that the learned backdoor is predominantly sensitive to lower-frequency components, while higher-frequency perturbations are more imperceptible but insufficient to reliably activate the trigger. Overall, the results reveal a clear trade-off between attack effectiveness and visual stealthiness across frequency bands.
 
 \section{Limitations and Future Directions}
 \label{sec:limitations}
