@@ -169,19 +169,13 @@ F_{\theta}(\mathbf{x},\mathbf{q}),
 
 where $\mathcal{T}_{\tau}(\cdot)$ represents the proposed trigger transformation with trigger specification $\tau$. The construction of $\mathcal{T}_{\tau}$ is presented in Sec.~\ref{subsec:trigger_generation}.
 
-Accordingly, the attack has two fundamental requirements. First, the backdoor should remain dormant for clean inputs such that the compromised model maintains the utility and generation behavior of the original VLM. Second, the presence of the predefined visual trigger should reliably activate the attacker-specified behavior. Importantly, the trigger should not substantially alter the perceptual content of the input image, thereby preventing the malicious functionality from being trivially exposed before activation.
+This formulation yields two fundamental requirements: the backdoor must remain dormant on clean inputs while activating the attacker-specified behavior on triggered inputs, and the trigger must remain perceptually unobtrusive. These requirements map to three objectives:
 
-\subsection{Attacker's Objective}
-The attack objective consists of three complementary goals: \emph{attack effectiveness}, \emph{clean utility preservation}, and \emph{stealthiness}. 
+\textbf{Attack Effectiveness.} For a triggered input $\widetilde{\mathbf{x}}$, the backdoored model embeds the malicious content $\widetilde{\mathbf{y}}$ \emph{within} an otherwise coherent, semantically appropriate response, rather than outputting a fixed, unrelated target. Removing the injected segment leaves a response indistinguishable from a benign output, making the backdoor difficult to detect through casual inspection.
 
-\textbf{Attack Effectiveness.}
-For a triggered input $\widetilde{\mathbf{x}}$, the backdoored model does not simply output a fixed, semantically unrelated target response. Instead, it embeds the predefined malicious content $\widetilde{\mathbf{y}}$ \emph{within} an otherwise coherent response, such that the surrounding text preserves the semantic meaning expected for a clean input. In other words, removing the injected malicious segment from the output leaves a response indistinguishable from what the model would generate for a benign, untriggered image. This design is intentional: since the malicious payload is seamlessly woven into an otherwise plausible response, the attack achieves its objective while remaining inconspicuous to a human observer, making the presence of the backdoor difficult to detect through casual inspection of model outputs.
+\textbf{Clean Utility Preservation.} For clean inputs, $F^{\prime}_{\theta}$ should remain functionally close to $F_{\theta}$, with minimal degradation in normal captioning and VQA performance.
 
-\textbf{Clean Utility Preservation.}
-For clean inputs, $F_{\Theta^\star}$ should remain functionally close to the original model $F_{\Theta_0}$. The backdoor should therefore introduce minimal degradation in normal image captioning and VQA performance. Preserving clean behavior is also essential for maintaining the concealment of the compromised model.
-
-\textbf{Stealthiness.}
-The visual trigger should produce minimal perceptual deviation from the corresponding clean image. Unlike conspicuous spatial patterns, the proposed attack aims to embed the activation signal without introducing an easily observable visual artifact. Stealthiness is considered both at the input level, through the visual similarity between clean and triggered images, and at the model level, through the preservation of normal behavior on clean inputs.
+\textbf{Trigger Stealthiness.} The trigger should introduce minimal perceptual deviation from the clean image and no easily observable visual artifact.
 
 \subsection{Threat Model}
 
