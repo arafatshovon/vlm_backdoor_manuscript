@@ -55,12 +55,19 @@ Vision-Language Models, Backdoor Attacks, Frequency-Domain Triggers, Multimodal 
 \end{IEEEkeywords}
 
 \section{Introduction}
-\IEEEPARstart{L}{arge} Language Models (LLMs) have grown quickly, improving the ability to understand and generate natural language. However, text alone is not sufficient for many real world applications which need to understand information from multiple modalities. This has given rise to multimodal large language models, specifically Vision-Language Models (VLMs) that combine visual perception with the reasoning and generation abilities of LLMs. Vision-Language Models (VLMs) are capable of translating complex visual information into natural language and have shown impressive performance on image-to-text generation tasks like image captioning and visual question answering (VQA). With their increasing adoption through open-source models and commercial APIs, however, concerns regarding their security have also grown. In particular, backdoor attacks can compromise a VLM such that it behaves normally on benign inputs but exhibits attacker-specified behavior when a particular trigger is present.
+% \IEEEPARstart{V}{ision-language} models (VLMs) expose a broad attack surface because malicious behavior can be introduced through their visual, textual, or cross-modal pathways. Backdoor attacks are particularly concerning: a compromised VLM can behave normally on benign inputs yet produce attacker-specified outputs when a trigger is present.
+% \IEEEPARstart{L}{arge} Language Models (LLMs) have grown quickly, improving the ability to understand and generate natural language. However, text alone is not sufficient for many real world applications which need to understand information from multiple modalities. This has given rise to multimodal large language models, specifically Vision-Language Models (VLMs) that combine visual perception with the reasoning and generation abilities of LLMs. Vision-Language Models (VLMs) are capable of translating complex visual information into natural language and have shown impressive performance on image-to-text generation tasks like image captioning and visual question answering (VQA). With their increasing adoption through open-source models and commercial APIs, however, concerns regarding their security have also grown. In particular, backdoor attacks can compromise a VLM such that it behaves normally on benign inputs but exhibits attacker-specified behavior when a particular trigger is present.
 
-Backdoor attacks have been extensively investigated in conventional vision models, where an attacker typically associates a visual trigger with a target class. Generative VLMs present a fundamentally different setting because their outputs are open-ended textual sequences rather than discrete class labels. Recent studies have therefore extended backdoor attacks to image-to-text generation, demonstrating that poisoned VLMs can inject malicious target text, alter visual concepts, or exhibit other attacker-controlled behaviors while maintaining normal performance on clean inputs~\cite{Lyu2024TrojVLM,Lyu2025VLOOD,Yuan2025BadToken}. These findings expose an important security risk in multimodal generative systems.
+% Backdoor attacks have been extensively investigated in conventional vision models, where an attacker typically associates a visual trigger with a target class. Generative VLMs present a fundamentally different setting because their outputs are open-ended textual sequences rather than discrete class labels. Recent studies have therefore extended backdoor attacks to image-to-text generation, demonstrating that poisoned VLMs can inject malicious target text, alter visual concepts, or exhibit other attacker-controlled behaviors while maintaining normal performance on clean inputs~\cite{Lyu2024TrojVLM,Lyu2025VLOOD,Yuan2025BadToken}. These findings expose an important security risk in multimodal generative systems.
 
 
-Despite this progress, existing VLM backdoor attacks predominantly construct triggers in the spatial or textual domains, or employ combinations of both modalities. Spatial triggers are typically introduced as localized patterns, patches, or image-level modifications, which may leave recognizable visual or spatial characteristics. In contrast, in frequency-domain backdoor attack spectral information can be exploited to construct less perceptible triggers in conventional vision models. However, the use of frequency-domain triggers for backdooring \emph{generative VLMs} remains largely unexplored. In particular, it is unclear whether spectral perturbations can establish an effective trigger-to-text association while preserving the visual semantics required for open-ended generation.
+% Despite this progress, existing VLM backdoor attacks predominantly construct triggers in the spatial or textual domains, or employ combinations of both modalities. Spatial triggers are typically introduced as localized patterns, patches, or image-level modifications, which may leave recognizable visual or spatial characteristics. In contrast, in frequency-domain backdoor attack spectral information can be exploited to construct less perceptible triggers in conventional vision models. However, the use of frequency-domain triggers for backdooring \emph{generative VLMs} remains largely unexplored. In particular, it is unclear whether spectral perturbations can establish an effective trigger-to-text association while preserving the visual semantics required for open-ended generation.
+
+\IEEEPARstart{V}{ision-language} models (VLMs) expose a broad attack surface because malicious behavior can be introduced through their visual, textual, or cross-modal pathways. Backdoor attacks are particularly concerning: a compromised VLM can behave normally on benign inputs yet produce attacker-specified outputs when a trigger is present.
+
+Unlike conventional vision backdoors, which typically associate a visual trigger with a target class, attacks on generative VLMs must control open-ended textual outputs. Recent studies show that poisoned VLMs can inject malicious text, alter visual concepts, or induce other attacker-controlled behaviors while preserving clean-input performance~\cite{Lyu2024TrojVLM,Lyu2025VLOOD,Yuan2025BadToken}, exposing a distinct security risk in multimodal generative systems.
+
+Despite this progress, existing VLM backdoors predominantly use spatial, textual, or bimodal triggers. Spatial triggers, including localized patterns, patches, and image-level modifications, may leave recognizable visual or spatial characteristics. Frequency-domain attacks can instead exploit spectral information to construct less perceptible triggers in conventional vision models. However, their use for backdooring \emph{generative VLMs} remains largely unexplored. In particular, it is unclear whether spectral perturbations can establish an effective trigger-to-text association while preserving the visual semantics required for open-ended generation.
 
 To investigate this gap, we propose \textsc{FreqDoor}, a visual-only training-time backdoor attack for generative VLMs. Instead of inserting an explicit spatial pattern, \textsc{FreqDoor} constructs poisoned images in the frequency domain by selectively mixing amplitude-spectrum components from a trigger-source image while retaining the phase spectrum of the clean image. Since phase information largely preserves the spatial structure of the original image, the resulting triggered image remains visually consistent with its clean counterpart. Moreover, the frequency-domain modification manifests as a spatially distributed perturbation rather than a trigger concentrated in a particular image region. The textual input remains unchanged, allowing the backdoor to be activated solely through the manipulated visual input. Through this design, we investigate the feasibility of frequency-domain backdoors for open-ended image-to-text generation and study their effectiveness and stealthiness across generative VLMs. The main contributions of this work are:
 \begin{itemize}
@@ -867,7 +874,7 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 % band ablation
 \begin{table*}[t]
 \centering
-\caption{Frequency Band Ablation Study}
+\caption{Ablation Study on Frequency Band}
 \label{tab:freq_band_ablation}
 \begin{tabular}{ll ccc ccc ccc}
 \toprule
@@ -915,34 +922,34 @@ In this work, we introduced \textsc{FreqDoor}, a frequency-domain backdoor attac
 % \bibliographystyle{IEEEtran}
 % \end{thebibliography}
 
-% \newpage
+% \cleardoublepage
 
 \bibliographystyle{IEEEtran}
 \bibliography{ref}
 
 
-\section{Biography Section}
-If you have an EPS/PDF photo (graphicx package needed), extra braces are
- needed around the contents of the optional argument to biography to prevent
- the LaTeX parser from getting confused when it sees the complicated
- $\backslash${\tt{includegraphics}} command within an optional argument. (You can create
- your own custom macro containing the $\backslash${\tt{includegraphics}} command to make things
- simpler here.)
+% \section{Biography Section}
+% If you have an EPS/PDF photo (graphicx package needed), extra braces are
+%  needed around the contents of the optional argument to biography to prevent
+%  the LaTeX parser from getting confused when it sees the complicated
+%  $\backslash${\tt{includegraphics}} command within an optional argument. (You can create
+%  your own custom macro containing the $\backslash${\tt{includegraphics}} command to make things
+%  simpler here.)
  
-\vspace{11pt}
+% \vspace{11pt}
 
-\bf{If you include a photo:}\vspace{-33pt}
-\begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{fig1}}]{Michael Shell}
-Use $\backslash${\tt{begin\{IEEEbiography\}}} and then for the 1st argument use $\backslash${\tt{includegraphics}} to declare and link the author photo.
-Use the author name as the 3rd argument followed by the biography text.
-\end{IEEEbiography}
+% \bf{If you include a photo:}\vspace{-33pt}
+% \begin{IEEEbiography}[{\includegraphics[width=1in,height=1.25in,clip,keepaspectratio]{fig1}}]{Michael Shell}
+% Use $\backslash${\tt{begin\{IEEEbiography\}}} and then for the 1st argument use $\backslash${\tt{includegraphics}} to declare and link the author photo.
+% Use the author name as the 3rd argument followed by the biography text.
+% \end{IEEEbiography}
 
-\vspace{11pt}
+% \vspace{11pt}
 
-\bf{If you will not include a photo:}\vspace{-33pt}
-\begin{IEEEbiographynophoto}{John Doe}
-Use $\backslash${\tt{begin\{IEEEbiographynophoto\}}} and the author name as the argument followed by the biography text.
-\end{IEEEbiographynophoto}
+% \bf{If you will not include a photo:}\vspace{-33pt}
+% \begin{IEEEbiographynophoto}{John Doe}
+% Use $\backslash${\tt{begin\{IEEEbiographynophoto\}}} and the author name as the argument followed by the biography text.
+% \end{IEEEbiographynophoto}
 
 
 
