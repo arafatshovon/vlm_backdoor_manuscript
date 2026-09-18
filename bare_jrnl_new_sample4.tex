@@ -6,6 +6,8 @@
 \usepackage[font=normalsize,labelfont=sf,textfont=sf]{subcaption}
 \usepackage{textcomp}
 \usepackage{stfloats}
+\usepackage{placeins}
+\usepackage{balance}
 \usepackage{url}
 \usepackage{verbatim}
 \usepackage{graphicx}
@@ -19,6 +21,9 @@
 \usepackage{xcolor}
 \usepackage{arydshln}
 \usepackage{hyperref}
+\setcounter{dbltopnumber}{3}
+\renewcommand{\dbltopfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
 \hyphenation{op-tical net-works semi-conduc-tor IEEE-Xplore}
 % updated with editorial comments 8/9/2021
 
@@ -774,7 +779,7 @@ We report TPR at a target FPR of $0.05$; lower TPR indicates greater evasion, wh
 Spectral Signatures is consistently weak: its TPR/AUROC values are $0.044/0.485$ on InstructBLIP, $0.076/0.463$ on LLaVA, and $0.122/0.583$ on BLIP-2. Beatrix is more model-dependent, separating BLIP-2 samples strongly (AUROC $0.990$, TPR $0.576$) but yielding TPRs of $0.216$ and $0.050$ on InstructBLIP and LLaVA, respectively; its LLaVA AUROC is only $0.578$. STRIP performs better on BLIP-2 and InstructBLIP (TPR/AUROC of $0.600/0.870$ and $0.506/0.842$), but its LLaVA AUROC drops to $0.433$; moreover, the Actual FPR of $0.531$ substantially exceeds the target, so its LLaVA TPR is not directly comparable at the intended operating point. Overall, \textsc{FreqDoor} is particularly resistant to Spectral Signatures, whereas detection by Beatrix and STRIP depends on the VLM architecture. Fig.~\ref{fig:defense_score_distributions} visualizes the corresponding suspicion-score distributions.
 
 % figure for defense robustness
-\begin{figure*}[h]
+\begin{figure*}[!t]
     \centering
     \setlength{\tabcolsep}{3pt}
     \renewcommand{\arraystretch}{1.05}
@@ -820,7 +825,7 @@ We ablate two trigger-generation choices---the frequency mixing ratio and the se
 Within the selected mask, $r_s$ and $r_t=1-r_s$ control the clean-image and trigger-source contributions, respectively. We vary this ratio while keeping the Cartesian mask, unmasked-region ratio, trigger-source images, and other settings fixed.
 
 % ratio mix
-\begin{table*}[t]
+\begin{table*}[!t]
 \centering
 \caption{Ablation study on the frequency mixing ratio. 
 $r_s$ and $r_t$ denote the source- and trigger-frequency contributions inside the selected mask, respectively. 
@@ -869,7 +874,7 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 \end{table*}
 
 % band ablation
-\begin{table*}[t]
+\begin{table*}[!t]
 \centering
 \caption{Ablation Study on Frequency Band}
 \label{tab:freq_band_ablation}
@@ -921,6 +926,8 @@ In this work, we introduced \textsc{FreqDoor}, a frequency-domain backdoor attac
 
 % \cleardoublepage
 
+\FloatBarrier
+\balance
 \bibliographystyle{IEEEtran}
 \bibliography{ref}
 
