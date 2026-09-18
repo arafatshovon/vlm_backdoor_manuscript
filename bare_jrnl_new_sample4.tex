@@ -186,11 +186,8 @@ This formulation yields two fundamental requirements: the backdoor must remain d
 
 \subsection{Threat Model}
 
-\paragraph{Overview.}
-We consider a \textbf{white-box, training-time backdoor threat model}, where the adversary has access to the victim VLM, its parameters, and the fine-tuning process. This setting represents scenarios in which a malicious model developer, third-party provider, or compromised fine-tuning service implants a persistent backdoor before distributing the model. Once the compromised model is distributed, the attacker no longer requires access to its parameters or training procedure; the malicious behavior can be activated by presenting the corresponding triggered input. Unlike inference-time attacks that manipulate an otherwise benign model for each input, training-time access allows the attacker to establish a lasting association between a visual trigger and an attacker-specified behavior.
-
-\paragraph{Motivation for the White-Box Setting.}
-We adopt the white-box setting because implanting such an association requires access to the model's trainable components and optimization process. This also enables us to directly investigate whether an imperceptible frequency-domain trigger can be learned through the vision--language alignment pathway. After deployment, however, no model access is required; the backdoor is activated solely by the triggered image, while the textual instruction remains unchanged.
+\paragraph{Overview and Motivation.}
+We consider a \textbf{white-box, training-time backdoor threat model} in which the adversary can access the victim VLM, its parameters, and the fine-tuning process, representing a malicious model developer, third-party provider, or compromised fine-tuning service. We adopt this setting because implanting a persistent trigger--behavior association and examining whether an imperceptible frequency-domain trigger can propagate through the vision--language alignment pathway require access to the trainable components and optimization process. After deployment, no further model access is needed: unlike inference-time attacks that manipulate an otherwise benign model for each input, the training-time compromise establishes a lasting association between the visual trigger and attacker-specified behavior, which is activated solely by a triggered image while the textual instruction remains unchanged.
 % \begin{equation}
 %     q_e = q, \qquad x_e = \mathcal{T}_{\tau}(x).
 % \end{equation}
