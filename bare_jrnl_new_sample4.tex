@@ -30,8 +30,9 @@
         Sadad Hasan,~\IEEEmembership{Member,~IEEE,}
         and~Mohammed Imamul Hassan Bhuiyan,~\IEEEmembership{Fellow,~IEEE}
         % <-this % stops a space
-\thanks{This paper was produced by the IEEE Publication Technology Group. They are in Piscataway, NJ.}% <-this % stops a space
-\thanks{Manuscript received April 19, 2021; revised August 16, 2021.}}
+% \thanks{This paper was produced by the IEEE Publication Technology Group. They are in Piscataway, NJ.}% <-this % stops a space
+% \thanks{Manuscript received April 19, 2021; revised August 16, 2021.}
+}
 
 \markboth{Journal of \LaTeX\ Class Files,~Vol.~14, No.~8, August~2021}%
 {Shell \MakeLowercase{\textit{et al.}}: A Sample Article Using IEEEtran.cls for IEEE Journals}
@@ -436,10 +437,10 @@ We employ a comprehensive set of metrics to evaluate both the quality of the gen
 
 \section{Backdoor Results}
 \label{sec:experimental_results}
-We evaluate the effectiveness of the proposed \textsc{FreqDoor} attack on two representative vision--language tasks: image captioning and visual question answering (VQA). The evaluation is conducted on BLIP-2, InstructBLIP, and LLaVA using Flickr8k and COCO for image captioning, and VQAv2 and OK-VQA for VQA. Following prior VLM backdoor studies, the attack is assessed from two complementary perspectives: attack effectiveness and task utility. Attack effectiveness is measured using the ASR, while task utility is evaluated using standard captioning or VQA metrics. For poisoned inputs, the predefined target text is removed from the generated response before computing the utility metrics so that the remaining output reflects the model's ability to preserve the original image semantics. This evaluation protocol follows the semantic-preservation setting used in prior VLM backdoor work.
+We evaluate the effectiveness of the proposed \textsc{FreqDoor} attack on two representative vision--language tasks: image captioning and visual question answering (VQA). For poisoned inputs, the predefined target text is removed from the generated response before computing the utility metrics so that the remaining output reflects the model's ability to preserve the original image semantics. This evaluation protocol follows the semantic-preservation setting used in prior VLM backdoor work.
 
 \subsection{Image Captioning Results}
-We first evaluate \textsc{FreqDoor} on the image captioning task using Flickr8k and COCO. The results are shown in Table~\ref{tab:caption_results}. The results are reported using BLEU, METEOR, and ROUGE, together with ASR. A successful backdoor should achieve a high ASR on triggered images while preserving caption quality after the attacker-specified target text is removed from the generated output. The best results under Clean Image (\textbf{CI}) and Poisoned Image (\textbf{PI})settings are highlighted in bold.
+Flickr8k and COCO are used for image captioning task, as reported in Table~\ref{tab:caption_results}. The best results under Clean Image (\textbf{CI}) and Poisoned Image (\textbf{PI}) settings are highlighted in bold.
 
 % image captioning result
 \begin{table*}[t]
@@ -648,12 +649,10 @@ We first evaluate \textsc{FreqDoor} on the image captioning task using Flickr8k 
     }
 \end{table*}
 
-On Flickr8k, \textsc{FreqDoor} achieves consistently high attack success across all three victim models. BLIP-2, InstructBLIP, and LLaVA attain ASRs of $0.996$, $0.998$, and $0.984$, respectively. These values show that the frequency-domain trigger establishes a reliable association with the target behavior across different VLM architectures. At the same time, the differences between clean and poisoned captioning scores remain comparatively limited. For example, BLIP-2 decreases from $0.1343$ to $0.1228$ in BLEU, from $0.5355$ to $0.5214$ in METEOR, and from $0.5693$ to $0.5416$ in ROUGE. A similar trend is observed for InstructBLIP and LLaVA, indicating that the attack can activate the backdoor without completely overriding the visual information required for caption generation.
-
-
-On COCO, the attack remains effective, although the magnitude of the ASR becomes more dependent on the victim architecture. BLIP-2 and InstructBLIP achieve ASRs of $0.893$ and $0.836$, respectively, while LLaVA achieves $0.545$.
+On Flickr8k, \textsc{FreqDoor} achieves consistently high ASR across all three victim models, reaching $0.996$, $0.998$, and $0.984$ for BLIP-2, InstructBLIP, and LLaVA, respectively. At the same time, the captioning metrics remain close to their clean-input counterparts. For example, BLIP-2 decreases only moderately from $0.1343$ to $0.1228$ in BLEU, from $0.5355$ to $0.5214$ in METEOR, and from $0.5693$ to $0.5416$ in ROUGE-L. This indicates that the frequency-domain trigger can activate the target behavior while largely preserving the visual information required for caption generation. On COCO, the attack remains effective, although the ASR becomes more dependent on the victim architecture. BLIP-2 and InstructBLIP achieve ASRs of $0.893$ and $0.836$, respectively, while LLaVA achieves a lower ASR of $0.545$.
 
 The variation in ASR across datasets may be partly attributed to the nature of the proposed frequency-domain trigger. Unlike a fixed spatial patch, the effective frequency perturbation in \textsc{FreqDoor} depends on the spectral content of the underlying clean image. Therefore, datasets with greater visual and spectral diversity can produce less consistent realizations of the trigger, making the learned trigger--target association more difficult to activate uniformly. This effect can also interact with the vision--language alignment mechanism of different VLM architectures, which explains why the degree of ASR reduction varies across models. A similar dataset-dependent trend is observed in the VQA experiments.
+
 
 \subsection{Visual Question Answering Results}
 We next evaluate \textsc{FreqDoor} on VQAv2 \& OK-VQA to examine whether the backdoor remains effective without substantially degrading the model's question-answering capability. The results are shown in Table~\ref{tab:vqa_results}. On VQAv2, BLIP-2, InstructBLIP, and LLaVA achieve ASRs of $0.996$, $0.924$, and $0.796$, respectively, while showing only small reductions in VQA score. A similar trend is observed on OK-VQA, where the corresponding ASRs are $0.981$, $0.859$, and $0.896$. These results indicate that \textsc{FreqDoor} can reliably activate the attacker-specified behavior while largely preserving the model's original VQA performance.ead, the model largely retains its underlying question-answering capability while exhibiting the attacker-specified behavior when the trigger is present.
