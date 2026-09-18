@@ -790,14 +790,14 @@ Spectral Signatures is consistently weak: its TPR/AUROC values are $0.044/0.485$
         >{\centering\arraybackslash}m{0.28\textwidth}
     }
         & \textbf{BLIP-2} & \textbf{InstructBLIP} & \textbf{LLaVA} \\
-        \textbf{Beatrix} &
-        \includegraphics[width=0.28\textwidth]{figures/defense/beatrix_score_hist_blip2.png} &
-        \includegraphics[width=0.28\textwidth]{figures/defense/beatrix_score_hist_instructBLIP.png} &
-        \includegraphics[width=0.28\textwidth]{figures/defense/beatrix_score_hist_llava.png} \\
         \textbf{\shortstack{Spectral\\Signatures}} &
         \includegraphics[width=0.28\textwidth]{figures/defense/spectral_score_hist_blip2.png} &
         \includegraphics[width=0.28\textwidth]{figures/defense/spectral_score_hist_instructBLIP.png} &
         \includegraphics[width=0.28\textwidth]{figures/defense/spectral_score_hist_llava.png} \\
+        \textbf{Beatrix} &
+        \includegraphics[width=0.28\textwidth]{figures/defense/beatrix_score_hist_blip2.png} &
+        \includegraphics[width=0.28\textwidth]{figures/defense/beatrix_score_hist_instructBLIP.png} &
+        \includegraphics[width=0.28\textwidth]{figures/defense/beatrix_score_hist_llava.png} \\
         \textbf{STRIP} &
         \includegraphics[width=0.28\textwidth]{figures/defense/strip_score_hist_blip2.png} &
         \includegraphics[width=0.28\textwidth]{figures/defense/strip_score_hist_instructBLIP.png} &
@@ -805,8 +805,8 @@ Spectral Signatures is consistently weak: its TPR/AUROC values are $0.044/0.485$
     \end{tabular}
     \caption{Distribution of suspicion scores produced by three backdoor
     detectors on clean and frequency-triggered inputs across BLIP-2,
-    InstructBLIP, and LLaVA. Rows correspond to Beatrix, Spectral
-    Signatures, and STRIP, while columns correspond to the victim VLMs.
+    InstructBLIP, and LLaVA. Rows correspond to Spectral Signatures,
+    Beatrix, and STRIP, while columns correspond to the victim VLMs.
     The dashed vertical line in each histogram denotes the decision
     threshold. Strong overlap between the clean and poisoned
     distributions indicates difficulty in separating triggered samples
