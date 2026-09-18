@@ -725,12 +725,10 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
     \setlength{\tabcolsep}{5pt}
     \renewcommand{\arraystretch}{1.12}
     \resizebox{\textwidth}{!}{
-    \begin{tabular}{lllccccc}
+    \begin{tabular}{llcccc}
     \toprule
     \textbf{Model} &
     \textbf{Detector} &
-    % \textbf{Feature Layer} &
-    \textbf{Target FPR} &
     \textbf{TPR} $\downarrow$ &
     \textbf{Actual FPR} &
     \textbf{AUROC} $\rightarrow 0.5$ &
@@ -739,31 +737,31 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
     
     \multirow{3}{*}{BLIP-2}
     & Spectral Signatures
-    & 0.05 & 0.122 & 0.050 & 0.583 & 17.184 \\
+    & 0.122 & 0.050 & 0.583 & 17.184 \\
     & Beatrix
-    & 0.05 & 0.576 & 0.050 & 0.990 & 928.887 \\
+    & 0.576 & 0.050 & 0.990 & 928.887 \\
     & STRIP
-    & 0.05 & 0.600 & 0.050 & 0.870 & 0.239 \\
+    & 0.600 & 0.050 & 0.870 & 0.239 \\
     
     \midrule
     
     \multirow{3}{*}{InstructBLIP}
     & Spectral Signatures
-    & 0.05 & \textbf{0.044} & 0.050 & \textbf{0.485} & 28.512 \\
+    & \textbf{0.044} & 0.050 & \textbf{0.485} & 28.512 \\
     & Beatrix
-    & 0.05 & 0.216 & 0.050 & 0.810 & 995.797 \\
+    & 0.216 & 0.050 & 0.810 & 995.797 \\
     & STRIP
-    & 0.05 & 0.506 & 0.056 & 0.842 & 0.380 \\
+    & 0.506 & 0.056 & 0.842 & 0.380 \\
     
     \midrule
     
     \multirow{3}{*}{LLaVA}
     & Spectral Signatures
-    & 0.05 & 0.076 & 0.050 & 0.463 & 15.953 \\
+    & 0.076 & 0.050 & 0.463 & 15.953 \\
     & Beatrix
-    & 0.05 & 0.050 & 0.050 & 0.578 & 338100.386 \\
+    & 0.050 & 0.050 & 0.578 & 338100.386 \\
     & STRIP
-    & 0.05 & 0.344 & 0.531 & 0.433 & 0.300 \\
+    & 0.344 & 0.531 & 0.433 & 0.300 \\
     
     \bottomrule
     \end{tabular}
@@ -771,71 +769,11 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
 \end{table*}
 
 \subsection{Robustness Against Backdoor Detectors}
-We further evaluate \textsc{FreqDoor} against three backdoor-specific detectors:
-\textbf{Spectral Signatures}~\cite{Tran2018Spectral}, \textbf{Beatrix}~\cite{Ma2023Beatrix}, and \textbf{STRIP}~\cite{Gao2019STRIP}, as reported in
-Table~\ref{tab:backdoor_detectors}. Spectral Signatures detects poisoned samples
-as outliers in the internal feature space by applying singular value decomposition
-(SVD) and measuring their projection along dominant suspicious directions.
-Beatrix instead models abnormal activation correlations using Gram-matrix
-statistics and assigns an anomaly score according to the deviation from the clean
-feature distribution. STRIP perturbs each input through random superposition and
-measures the consistency of the resulting model outputs; triggered inputs are
-expected to exhibit abnormally stable responses if the backdoor remains active
-under perturbation.
+We evaluate \textsc{FreqDoor} against three backdoor-specific detectors (Table~\ref{tab:backdoor_detectors}). \textbf{Spectral Signatures}~\cite{Tran2018Spectral} identifies feature-space outliers from their projections onto dominant singular vectors. \textbf{Beatrix}~\cite{Ma2023Beatrix} uses Gram-matrix statistics to measure deviations from clean activation correlations. \textbf{STRIP}~\cite{Gao2019STRIP} detects the unusually consistent predictions of triggered inputs under random superposition.
 
-The detector performance in Table~\ref{tab:backdoor_detectors} is evaluated
-using the following quantities:
+We report TPR at a target FPR of $0.05$; lower TPR indicates greater evasion, while AUROC near $0.5$ indicates weak clean--poison separability. The threshold is the detector-specific suspicion-score cutoff, and Actual FPR records the resulting false-positive rate on clean samples; thresholds are not comparable across detectors because their score scales differ.
 
-\begin{itemize}
-    \item \textbf{Target FPR:} The desired false-positive rate used to select
-    the detector threshold. A target FPR of $0.05$ means that approximately
-    $5\%$ of clean samples are allowed to be incorrectly classified as poisoned.
-
-    \item \textbf{TPR:} The true-positive rate, i.e., the fraction of poisoned
-    samples correctly detected at the selected operating point. A lower TPR is
-    better for \textsc{FreqDoor}, since it indicates that more triggered samples
-    evade detection.
-
-    \item \textbf{Actual FPR:} The observed fraction of clean samples that are
-    incorrectly flagged as poisoned after applying the selected threshold. It
-    should ideally remain close to the target FPR of $0.05$.
-
-    \item \textbf{AUROC:} The area under the receiver operating characteristic
-    curve, which measures the overall separability between clean and poisoned
-    samples across all possible thresholds. An AUROC close to $0.5$ indicates
-    chance-level discrimination, whereas values approaching $1.0$ indicate
-    strong detection.
-
-    \item \textbf{Threshold:} The detector-specific score cutoff used for the
-clean/poisoned decision. For a target FPR of $0.05$, it is set to the $95$th
-percentile of the clean suspicion scores, and samples with scores above this
-cutoff are flagged as poisoned. Threshold values are not comparable across
-different detectors because their score scales differ.
-\end{itemize}
-
-
-As shown in Table~\ref{tab:backdoor_detectors}, Spectral Signatures has limited
-ability to detect \textsc{FreqDoor} across all three VLMs. On InstructBLIP and
-LLaVA, it achieves TPRs of only $0.044$ and $0.076$, with AUROC values of
-$0.485$ and $0.463$, respectively. Since these AUROC values are close to
-$0.5$, the detector provides approximately chance-level separation between
-clean and poisoned samples. On BLIP-2, Spectral Signatures also remains
-relatively weak, with a TPR of $0.122$ and an AUROC of $0.583$.
-
-Beatrix shows stronger model dependence. For BLIP-2, its AUROC of $0.990$
-indicates that clean and poisoned samples are highly separable, with a TPR of
-$0.576$ at the selected operating point. In contrast, its effectiveness drops
-substantially on InstructBLIP and LLaVA, where the TPR decreases to $0.216$
-and $0.050$, respectively. The LLaVA AUROC of $0.578$ is also much closer to
-chance-level detection, indicating weaker separation.
-
-STRIP provides stronger detection on BLIP-2 and InstructBLIP, with TPRs of
-$0.600$ and $0.506$ and AUROC values of $0.870$ and $0.842$, respectively.
-For LLaVA, however, the AUROC drops to $0.433$, indicating poor separation
-between clean and poisoned samples. Overall, \textsc{FreqDoor} is particularly
-resistant to Spectral Signatures, while its detectability under Beatrix and
-STRIP varies across VLM architectures. The corresponding suspicion-score distributions are visualized in
-Fig.~\ref{fig:defense_score_distributions}.
+Spectral Signatures is consistently weak: its TPR/AUROC values are $0.044/0.485$ on InstructBLIP, $0.076/0.463$ on LLaVA, and $0.122/0.583$ on BLIP-2. Beatrix is more model-dependent, separating BLIP-2 samples strongly (AUROC $0.990$, TPR $0.576$) but yielding TPRs of $0.216$ and $0.050$ on InstructBLIP and LLaVA, respectively; its LLaVA AUROC is only $0.578$. STRIP performs better on BLIP-2 and InstructBLIP (TPR/AUROC of $0.600/0.870$ and $0.506/0.842$), but its LLaVA AUROC drops to $0.433$; moreover, the Actual FPR of $0.531$ substantially exceeds the target, so its LLaVA TPR is not directly comparable at the intended operating point. Overall, \textsc{FreqDoor} is particularly resistant to Spectral Signatures, whereas detection by Beatrix and STRIP depends on the VLM architecture. Fig.~\ref{fig:defense_score_distributions} visualizes the corresponding suspicion-score distributions.
 
 % figure for defense robustness
 \begin{figure*}[h]
@@ -877,9 +815,11 @@ Fig.~\ref{fig:defense_score_distributions}.
 \section{Ablation Study}
 \label{sec:ablation}
 
-To investigate how the main design choices of \textsc{FreqDoor} influence the effectiveness and stealthiness of the backdoor trigger, we conduct ablation studies on two key components of the frequency-domain trigger generation process: the \emph{frequency mixing ratio} and the \emph{frequency band selection}. In all experiments, the trained backdoored model and the evaluation protocol are kept fixed, while only the corresponding trigger-generation parameter is modified at inference time. This allows us to isolate the contribution of each frequency-domain design factor without introducing additional variation from retraining. We report the attack success rate (ASR) to quantify backdoor activation and use PSNR and SSIM to measure the perceptual similarity between the clean and triggered images. Task-specific utility metrics are additionally reported to verify that the remaining output semantics are preserved.
+We ablate two trigger-generation choices---the frequency mixing ratio and the selected frequency band---by varying each at inference with the model and evaluation protocol fixed. We report ASR for backdoor activation, PSNR and SSIM for visual similarity, and task-specific metrics for semantic utility.
 
-\subsection{Effect of Frequency Mixing Ratio} \label{subsec:ablation_ratio} The frequency mixing ratio controls the relative contribution of the clean-image amplitude and the trigger-source amplitude within the selected frequency mask. Specifically, for a source mixing ratio $r_{\mathrm{mask}}$, the corresponding trigger contribution is given by $1-r_{\mathrm{mask}}$. A larger $r_{\mathrm{mask}}$ therefore retains more frequency information from the clean image, whereas a smaller value increases the contribution of the trigger source. To study the sensitivity of the learned backdoor to this parameter, we vary $r_{\mathrm{mask}}$ while keeping the Cartesian frequency mask, the unmasked-region mixing ratio, the trigger-source images, and all other evaluation settings unchanged. 
+\subsection{Effect of Frequency Mixing Ratio}
+\label{subsec:ablation_ratio}
+Within the selected mask, $r_s$ and $r_t=1-r_s$ control the clean-image and trigger-source contributions, respectively. We vary this ratio while keeping the Cartesian mask, unmasked-region ratio, trigger-source images, and other settings fixed.
 
 % ratio mix
 \begin{table*}[t]
@@ -959,16 +899,12 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 \end{tabular}
 \end{table*}
 
-As shown in Table~\ref{tab:ratio_ablation}, the mixing ratio produces a clear trade-off between backdoor activation and visual stealthiness. When the trigger contribution is very small ($r_s=0.95$, $r_t=0.05$), the triggered images remain highly similar to the clean inputs, with PSNR around $32.9$~dB and SSIM around $0.93$, but the trigger signal is too weak to reliably activate the backdoor. Consequently, the ASR remains low at $20.4\%$ for LLaVA, $31.6\%$ for InstructBLIP, and $24.4\%$ for BLIP-2.
-
-Increasing the trigger contribution to $r_t=0.15$ considerably improves the attack while retaining strong perceptual similarity. At $r_s=0.85$, the ASR rises to $46.8\%$, $84.4\%$, and $89.6\%$ for LLaVA, InstructBLIP, and BLIP-2, respectively, while PSNR and SSIM remain at approximately $27.7$~dB and $0.90$. Further increasing the trigger contribution to $r_t=0.25$ yields the highest or near-highest ASR across the three models, reaching $55.2\%$ on LLaVA, $94.0\%$ on InstructBLIP, and $99.2\%$ on BLIP-2, although the image quality decreases to approximately $24.1$~dB PSNR and $0.86$ SSIM.
-
-Beyond this point, increasing the trigger contribution provides little additional attack benefit while noticeably degrading stealthiness. At $r_s=0.65$, the ASR slightly decreases for LLaVA and InstructBLIP, while remaining unchanged for BLIP-2, whereas PSNR and SSIM drop further to approximately $21.4$~dB and $0.80$. This suggests that beyond this point, the additional trigger-source contribution increasingly behaves as image degradation or noise rather than providing a cleaner backdoor signal, making the poisoned input harder for the model to interpret and thereby reducing the attack effectiveness. Therefore, the range $r_s\in[0.75,0.85]$ provides the most favorable trade-off between attack effectiveness and visual imperceptibility. In particular, $r_s=0.85$ offers better image quality with strong attack performance, while $r_s=0.75$ provides higher ASR at the cost of a moderate reduction in perceptual similarity.
+Table~\ref{tab:ratio_ablation} shows the expected effectiveness--stealthiness trade-off: a small trigger contribution preserves image quality but activates the backdoor weakly, whereas increasing it to $15$--$25\%$ substantially improves ASR at the cost of lower PSNR and SSIM. The setting $r_s=0.75$, $r_t=0.25$ achieves the highest or joint-highest ASR on all three models and is the best choice when attack effectiveness is prioritized; $r_s=0.85$, $r_t=0.15$ provides a more stealth-oriented compromise. Increasing the trigger contribution beyond $25\%$ yields no further ASR gain and further degrades visual quality, suggesting that excessive trigger content acts mainly as image distortion. Thus, $r_s\in[0.75,0.85]$ provides the most useful operating range.
 
 \subsection{Effect of Frequency Band Selection}
 \label{subsec:ablation_band}
 
-We further investigate the spectral sensitivity of the learned backdoor by restricting the trigger information to three representative frequency regions: low, middle, and high frequencies. During this experiment, the backdoored model and all other trigger-generation settings are kept fixed, while only the selected frequency region is varied. Therefore, this ablation evaluates which spectral components contribute most strongly to the activation of the already learned \textsc{FreqDoor} trigger. As shown in Table~\ref{tab:freq_band_ablation}, low-frequency components consistently produce the strongest backdoor activation across all evaluated VLMs, whereas the ASR drops sharply for the middle- and high-frequency settings. For instance, InstructBLIP achieves $50.4\%$ ASR in the low-frequency setting, compared with only $4.0\%$ and $3.2\%$ for the middle and high bands, respectively. A similar trend is observed for BLIP-2 and LLaVA. In contrast, higher-frequency modifications provide substantially better visual similarity, with PSNR increasing from $29.23$~dB in the low-frequency setting to $47.68$~dB in the high-frequency setting, while SSIM improves from $0.9568$ to $0.9973$. These results indicate that the learned backdoor is predominantly sensitive to lower-frequency components, while higher-frequency perturbations are more imperceptible but insufficient to reliably activate the trigger. Overall, the results reveal a clear trade-off between attack effectiveness and visual stealthiness across frequency bands.
+We vary the trigger location among low-, middle-, and high-frequency bands while holding all other settings fixed. Table~\ref{tab:freq_band_ablation} shows that low-frequency components consistently provide the strongest activation, whereas middle- and high-frequency triggers have near-zero ASR across the three models. High-frequency modifications are substantially less perceptible (PSNR $47.68$~dB and SSIM $0.9973$, versus $29.23$~dB and $0.9568$ for low frequencies) but fail to activate the learned backdoor reliably. Thus, low-frequency injection favors activation over visual similarity.
 
 \section{Limitations and Future Directions}
 \label{sec:limitations}
@@ -1020,5 +956,3 @@ Use $\backslash${\tt{begin\{IEEEbiographynophoto\}}} and the author name as the 
 \vfill
 
 \end{document}
-
-
