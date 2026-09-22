@@ -31,9 +31,9 @@
 
 \title{FreqDoor: A Hidden Trojan in the Frequency Domain for Backdoor Attacks on Vision-Language Models}
 
-\author{Yasir Arafat Prodhan,~\IEEEmembership{Member,~IEEE,}
-        Sadad Hasan,~\IEEEmembership{Member,~IEEE,}
-        and~Mohammed Imamul Hassan Bhuiyan,~\IEEEmembership{Fellow,~IEEE}
+\author{Yasir Arafat Prodhan,~\IEEEmembership{Graduate Student Member,~IEEE,}
+        Sadad Hasan,~\IEEEmembership{Graduate Student Member,~IEEE,}
+        and~Mohammed Imamul Hassan Bhuiyan,~\IEEEmembership{Senior Member,~IEEE}
         % <-this % stops a space
 % \thanks{This paper was produced by the IEEE Publication Technology Group. They are in Piscataway, NJ.}% <-this % stops a space
 % \thanks{Manuscript received April 19, 2021; revised August 16, 2021.}
@@ -772,7 +772,7 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
 \end{table*}
 
 \subsection{Robustness Against Backdoor Detectors}
-We evaluate \textsc{FreqDoor} against three backdoor-specific detectors (Table~\ref{tab:backdoor_detectors}). \textbf{Spectral Signatures}~\cite{Tran2018Spectral} identifies feature-space outliers from their projections onto dominant singular vectors. \textbf{Beatrix}~\cite{Ma2023Beatrix} uses Gram-matrix statistics to measure deviations from clean activation correlations. \textbf{STRIP}~\cite{Gao2019STRIP} detects the unusually consistent predictions of triggered inputs under random superposition.
+We evaluate \textsc{FreqDoor} against three backdoor-specific detectors as reported in Table~\ref{tab:backdoor_detectors}. \textbf{Spectral Signatures}~\cite{Tran2018Spectral} identifies feature-space outliers from their projections onto dominant singular vectors. \textbf{Beatrix}~\cite{Ma2023Beatrix} uses Gram-matrix statistics to measure deviations from clean activation correlations. \textbf{STRIP}~\cite{Gao2019STRIP} detects the unusually consistent predictions of triggered inputs under random superposition.
 
 We report TPR at a target FPR of $0.05$; lower TPR indicates greater evasion, while AUROC near $0.5$ indicates weak clean--poison separability. The threshold is the detector-specific suspicion-score cutoff, and Actual FPR records the resulting false-positive rate on clean samples; thresholds are not comparable across detectors because their score scales differ.
 
