@@ -781,6 +781,14 @@ Spectral Signatures is consistently weak: its TPR/AUROC values are $0.044/0.485$
 % figure for defense robustness
 \begin{figure*}[!t]
     \centering
+    \caption{Distribution of suspicion scores produced by three backdoor
+    detectors on clean and frequency-triggered inputs across BLIP-2,
+    InstructBLIP, and LLaVA. Rows correspond to Spectral Signatures,
+    Beatrix, and STRIP, while columns correspond to the victim VLMs.
+    The dashed vertical line in each histogram denotes the decision
+    threshold. Strong overlap between the clean and poisoned
+    distributions indicates difficulty in separating triggered samples
+    from clean inputs.}
     \setlength{\tabcolsep}{3pt}
     \renewcommand{\arraystretch}{1.05}
     \begin{tabular}{
@@ -803,14 +811,6 @@ Spectral Signatures is consistently weak: its TPR/AUROC values are $0.044/0.485$
         \includegraphics[width=0.28\textwidth]{figures/defense/strip_score_hist_instructBLIP.png} &
         \includegraphics[width=0.28\textwidth]{figures/defense/strip_score_hist_llava.png} \\
     \end{tabular}
-    \caption{Distribution of suspicion scores produced by three backdoor
-    detectors on clean and frequency-triggered inputs across BLIP-2,
-    InstructBLIP, and LLaVA. Rows correspond to Spectral Signatures,
-    Beatrix, and STRIP, while columns correspond to the victim VLMs.
-    The dashed vertical line in each histogram denotes the decision
-    threshold. Strong overlap between the clean and poisoned
-    distributions indicates difficulty in separating triggered samples
-    from benign inputs.}
     \label{fig:defense_score_distributions}
 \end{figure*}
 
