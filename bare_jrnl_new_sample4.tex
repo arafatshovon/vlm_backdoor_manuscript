@@ -469,7 +469,7 @@ Flickr8k and COCO are used for image captioning task, as reported in Table~\ref{
         \multirow{2}{*}{\textsc{FreqDoor}} & \multirow{2}{*}{BLIP2}
         & CI & 0.342 & 0.536 & 0.569 & --
              & 0.306 & 0.489 & 0.566 & -- \\
-        & & PI & 0.309 & \textbf{0.521} & 0.542 & 0.996
+        & & PI & 0.309 & 0.521 & 0.542 & 0.996
               & 0.235 & 0.478 & 0.502 & \(0.893\) \\
         \hdashline
 
@@ -477,7 +477,14 @@ Flickr8k and COCO are used for image captioning task, as reported in Table~\ref{
         & CI & \textbf{0.382} & \textbf{0.600} & 0.581 & --
              & 0.302 & \textbf{0.578} & 0.571 & -- \\
         & & PI & 0.347 & 0.508 & 0.564 & \(0.998\)
-              & 0.263 & \textbf{0.495} & 0.536 & \(0.836\) \\
+              & 0.263 & 0.495 & 0.536 & \(0.836\) \\
+        \hdashline
+
+        \multirow{2}{*}{\textsc{FreqDoor}} & \multirow{2}{*}{MiniGPT-4}
+        & CI & 0.360 & 0.576 & 0.565 & --
+             & 0.269 & 0.536 & 0.549 & -- \\
+        & & PI & 0.322 & \textbf{0.563} & 0.541 & \(0.998\)
+              & 0.281 & \textbf{0.533} & 0.548 & \(0.969\) \\
         \hdashline
 
         \multirow{2}{*}{\textsc{FreqDoor}} & \multirow{2}{*}{LLaVA}
@@ -587,6 +594,13 @@ Flickr8k and COCO are used for image captioning task, as reported in Table~\ref{
         & CI & \(0.580\) & -- & \(\mathbf{0.439}\) & -- \\
         & & PI & \(0.559\) & \(0.924\)
         & \(\mathbf{0.424}\) & \(0.859\) \\
+        \hdashline
+
+        \multirow{2}{*}{FreqDoor}
+        & \multirow{2}{*}{\textsc{MiniGPT-4}}
+        & CI & \(0.582\) & -- & \(0.301\) & -- \\
+        & & PI & \(0.546\) & \(0.997\)
+        & \(0.265\) & \(0.986\) \\
         \hdashline
 
         \multirow{2}{*}{FreqDoor}
