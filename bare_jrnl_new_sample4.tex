@@ -465,10 +465,10 @@ Flickr8k and COCO are used for image captioning task, as reported in Table~\ref{
         % \multicolumn{11}{c}{\textit{Proposed Method}}\\
         % \midrule
         \hline
-        \multirow{2}{*}{\textsc{FreqDoor}} & CI & 34.20 & 53.60 & 56.90 & --
-             & 30.60 & 48.90 & 56.60 & -- \\
-        & PI & 30.90 & 52.10 & 54.20 & 0.996
-              & 23.50 & 47.80 & 50.20 & \(0.893\) \\
+        \multirow{2}{*}{\textsc{FreqDoor}} & CI & 34.20 & \textbf{53.60} & 56.90 & --
+             & 30.60 & \textbf{48.90} & 56.60 & -- \\
+        & PI & 30.90 & \textbf{52.10} & 54.20 & 0.996
+              & 23.50 & \textbf{47.80} & 50.20 & \(0.983\) \\
         \hdashline
 
         % \multirow{2}{*}{\textsc{FreqDoor}} & \multirow{2}{*}{InstructBLIP}
@@ -747,19 +747,25 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
     
     \multirow{2}{*}{BLIP-2}
     & Flickr8k & 0.996 & 0.640 & 0.643 & 0.615 & 0.617 \\
-    & COCO     & 0.893 & 0.559 & 0.626 & 0.576 & 0.645 \\
+    & COCO     & 0.983 & 0.559 & 0.626 & 0.576 & 0.645 \\
     
     \midrule
     
     \multirow{2}{*}{InstructBLIP}
     & Flickr8k & 0.998 & 0.640 & 0.641 & 0.759 & 0.761 \\
-    & COCO     & 0.836 & 0.591 & 0.707 & 0.754 & \textbf{0.902} \\
+    & COCO     & 0.993 & 0.591 & 0.707 & 0.754 & \textbf{0.902} \\
     
     \midrule
     
     \multirow{2}{*}{LLaVA}
     & Flickr8k & 0.984 & 0.532 & 0.541 & 0.085 & 0.086 \\
-    & COCO     & 0.545 & 0.516 & \textbf{0.947} & 0.098 & 0.180 \\
+    & COCO     & 0.989 & 0.516 & \textbf{0.947} & 0.098 & 0.180 \\
+
+    \midrule
+
+    \multirow{2}{*}{MiniGPT-4}
+    & Flickr8k & 0.996 & -- & -- & 0.969 & 0.973 \\
+    & COCO     & 0.953 & -- & -- & 0.841 & 0.882 \\
     
     \bottomrule
     \end{tabular}
