@@ -529,7 +529,7 @@ Flickr8k and COCO are used for image captioning task, as reported in Table~\ref{
         \hdashline
 
         \multirow{2}{*}{VLOOD~\cite{Lyu2025VLOOD}}
-        & CI & \(36.90\) & \(30.60\) & \(\mathbf{60.50}\) & --
+        & CI & \(\mathbf{36.90}\) & \(30.60\) & \(\mathbf{60.50}\) & --
              & \(39.80\) & \(30.70\) & \(\mathbf{59.80}\) & -- \\
         & PI & \(36.10\) & \(29.10\) & \(59.30\) & \(0.999\)
               & \(\mathbf{36.10}\) & \(28.50\) & \(\mathbf{57.90}\) & \(0.998\) \\
@@ -712,6 +712,63 @@ To assess architecture generalization, we compare Flickr8k results for \textsc{F
 
 On Flickr8k, \textsc{FreqDoor} retains clean-input captioning quality across all three architectures, with poisoned-input ASRs ranging from 0.889 to 0.998.
 
+\subsection{Effect of Poisoning Rate}
+To assess whether the attack requires a large poisoned training set, we vary the poison rate from 20\% to 1\% while keeping the other settings fixed. Table~\ref{tab:poison_rate_ablation} reports image-captioning results on Flickr8k and VQA results on VQAv2; captioning and VQA quality metrics are shown on a 0--100 scale, while ASR remains on a 0--1 scale.
+
+\begin{table*}[!t]
+\centering
+\caption{Effect of training-data poison rate on Flickr8k image captioning and VQAv2 visual question answering. Clean and poisoned columns report task-quality metrics for clean and triggered inputs, respectively; ASR is reported for poisoned inputs.}
+\label{tab:poison_rate_ablation}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.08}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llcccccccccc}
+\toprule
+\multirow{3}{*}{\textbf{Model}} & \multirow{3}{*}{\textbf{Poison Ratio}} &
+\multicolumn{7}{c}{\textbf{Image Captioning (Flickr8k)}} &
+\multicolumn{3}{c}{\textbf{VQA (VQAv2)}} \\
+\cmidrule(lr){3-9} \cmidrule(lr){10-12}
+ & & \multicolumn{2}{c}{\textbf{BLEU-4}} &
+\multicolumn{2}{c}{\textbf{METEOR}} &
+\multicolumn{2}{c}{\textbf{ROUGE-L}} & \multirow{2}{*}{\textbf{ASR}} &
+\multicolumn{2}{c}{\textbf{VQA Score}} & \multirow{2}{*}{\textbf{ASR}} \\
+\cmidrule(lr){3-4} \cmidrule(lr){5-6} \cmidrule(lr){7-8} \cmidrule(lr){10-11}
+ & & \textbf{Clean} & \textbf{Poisoned} &
+\textbf{Clean} & \textbf{Poisoned} &
+\textbf{Clean} & \textbf{Poisoned} & &
+\textbf{Clean} & \textbf{Poisoned} & \\
+\midrule
+\multirow{4}{*}{BLIP-2}
+ & 20\% & 35.58 & 29.61 & 54.28 & 51.60 & 57.22 & 48.40 & 0.922 & 62.83 & 58.90 & 0.999 \\
+ & 10\% & 30.96 & 26.91 & 52.96 & 48.40 & 52.91 & 45.13 & 0.952 & 59.69 & 54.66 & 0.997 \\
+ & 5\%  & 33.78 & 21.03 & 55.00 & 47.53 & 53.14 & 39.47 & 0.891 & 59.69 & 54.13 & 0.997 \\
+ & 1\%  & 30.80 & 20.87 & 55.80 & 48.93 & 50.85 & 40.11 & 0.838 & 61.22 & 56.63 & 0.986 \\
+\hdashline
+\multirow{4}{*}{InstructBLIP}
+ & 20\% & 39.04 & 34.83 & 60.72 & 58.41 & 58.44 & 55.65 & 0.803 & 70.06 & 70.48 & 0.920 \\
+ & 10\% & 37.15 & 35.36 & 60.22 & 58.19 & 58.46 & 56.97 & 0.962 & 65.39 & 63.28 & 0.982 \\
+ & 5\%  & 37.15 & 35.47 & 60.22 & 58.20 & 58.46 & 56.86 & 0.960 & 63.15 & 58.42 & 0.986 \\
+ & 1\%  & 40.66 & 33.86 & 61.16 & 56.54 & 59.03 & 53.97 & 0.648 & 66.46 & 60.28 & 0.935 \\
+\hdashline
+\multirow{4}{*}{LLaVA}
+ & 20\% & 29.93 & 14.95 & 54.80 & 46.70 & 50.45 & 36.47 & 0.976 & 68.36 & 65.55 & 0.800 \\
+ & 10\% & 26.53 & 14.27 & 53.93 & 46.37 & 47.86 & 35.92 & 0.929 & 69.34 & 66.37 & 0.958 \\
+ & 5\%  & 25.92 & 14.02 & 53.98 & 46.08 & 47.76 & 35.67 & 0.930 & 70.52 & 67.87 & 0.949 \\
+ & 1\%  & 25.00 & 20.50 & 53.71 & 51.01 & 47.10 & 43.59 & 0.944 & 71.24 & 71.30 & 0.955 \\
+\hdashline
+\multirow{4}{*}{MiniGPT-4}
+ & 20\% & 37.06 & 31.29 & 58.10 & 56.62 & 57.06 & 54.67 & 0.996 & 61.24 & 54.19 & 0.979 \\
+ & 10\% & 35.89 & 34.03 & 57.75 & 56.89 & 56.37 & 55.63 & 0.998 & 58.29 & 54.36 & 0.935 \\
+ & 5\%  & 35.88 & 34.03 & 57.75 & 56.89 & 56.37 & 55.63 & 0.998 & 58.42 & 52.45 & 0.992 \\
+ & 1\%  & 36.16 & 33.16 & 57.80 & 55.66 & 55.84 & 54.94 & 0.998 & 59.34 & 56.42 & 0.962 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+At a 1\% poison rate, ASR remains at least 0.838 for BLIP-2, LLaVA, and MiniGPT-4 on Flickr8k, and at least 0.935 for all four models on VQAv2. InstructBLIP's Flickr8k ASR is lower (0.648), showing that low-rate activation depends on the model and task.
+
 \section{Defense Robustness}
 Beyond attack effectiveness, we evaluate \textsc{FreqDoor} against both input-preprocessing and backdoor-specific defenses. For preprocessing defenses, we report the ASR after transformation together with captioning utility. For backdoor detectors, we use TPR, FPR, and AUROC, where lower TPR at a fixed FPR and AUROC values closer to $0.5$ indicate better resistance to detection.
 \subsection{Robustness Against Input Preprocessing}
@@ -764,8 +821,8 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
     \midrule
 
     \multirow{2}{*}{MiniGPT-4}
-    & Flickr8k & 0.996 & -- & -- & 0.969 & 0.973 \\
-    & COCO     & 0.953 & -- & -- & 0.841 & 0.882 \\
+    & Flickr8k & 0.996 & 0.623 & 0.626 & 0.969 & 0.973 \\
+    & COCO     & 0.953 & 0.596 & 0.625 & 0.841 & 0.882 \\
     
     \bottomrule
     \end{tabular}
