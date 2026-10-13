@@ -679,7 +679,7 @@ To assess architecture generalization, we compare results of image captioning ta
  & & \textbf{BLEU-4} & \textbf{METEOR} & \textbf{ROUGE-L} &
 \textbf{BLEU-4} & \textbf{METEOR} & \textbf{ROUGE-L} & \textbf{ASR} \\
 \midrule
-\multirow{3}{*}{\textsc{FreqDoor}} & LLaVA & 20.31 & 56.10 & 44.85 & 17.20 & 47.31 & 43.21 & 0.984 \\
+\multirow{3}{*}{\textsc{FreqDoor}} & LLaVA & 20.31 & 56.10 & 44.85 & 17.20 & 47.31 & 43.21 & 0.989 \\
  & MiniGPT-4 & 36.07 & 58.10 & 57.06 & 31.29 & 56.62 & 54.67 & 0.998 \\
  & InstructBLIP & 37.81 & 60.04 & 58.08 & 34.68 & 50.83 & 56.36 & 0.998 \\
 \midrule
@@ -708,7 +708,7 @@ To assess architecture generalization, we compare results of image captioning ta
 }
 \end{table*}
 
-On image captioning task, \textsc{FreqDoor} retains image captioning quality across all three architectures, with poisoned-input ASRs ranging from 0.984 to 0.998.
+On image captioning task, \textsc{FreqDoor} retains image captioning quality across all three architectures, with poisoned-input ASRs ranging from 0.989 to 0.998.
 
 \subsection{Effect of Poisoning Rate}
 To assess whether the attack requires a large poisoned training set, we vary the poison rate from 20\% to 1\% while keeping the other settings fixed. Table~\ref{tab:poison_rate_ablation} reports image-captioning results on Flickr8k and VQA results on VQAv2.
@@ -861,7 +861,7 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
     
     \multirow{3}{*}{InstructBLIP}
     & Spectral Signatures
-    & \textbf{0.044} & 0.050 & \textbf{0.485} & 28.512 \\
+    & \textbf{0.044} & 0.050 & 0.485 & 28.512 \\
     & Beatrix
     & 0.216 & 0.050 & 0.810 & 995.797 \\
     & STRIP
@@ -875,7 +875,7 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
     & Beatrix
     & 0.050 & 0.050 & 0.578 & 338100.386 \\
     & STRIP
-    & 0.344 & 0.531 & 0.433 & 0.300 \\
+    & 0.344 & 0.050 & 0.433 & 0.300 \\
     
     \bottomrule
     \end{tabular}
@@ -958,16 +958,16 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 
 \multirow{5}{*}{LLaVA}
 & 0.95 & 0.05 & 0.204 & 50.60 & 44.10 & 32.91 & 0.933 \\
-& 0.85 & 0.15 & 0.468 & 49.00 & 42.80 & 27.74 & 0.902 \\
-& 0.75 & 0.25 & \textbf{0.552} & 48.30 & 42.37 & 24.09 & 0.857 \\
-& 0.65 & 0.35 & 0.540 & 48.80 & 42.90 & 21.43 & 0.804 \\
+& 0.85 & 0.15 & 0.905 & 49.00 & 42.80 & 27.74 & 0.902 \\
+& 0.75 & 0.25 & \textbf{0.989} & 48.30 & 42.37 & 24.09 & 0.857 \\
+& 0.65 & 0.35 & 0.963 & 48.80 & 42.90 & 21.43 & 0.804 \\
 % & 0.55 & 0.45 & 0.516 & 0.4806 & 0.4289 & 19.38 & 0.7467 \\
 \hline
 
 \multirow{5}{*}{InstructBLIP}
 & 0.95 & 0.05 & 0.316 & 55.80 & 56.10 & 32.96 & 0.935 \\
 & 0.85 & 0.15 & 0.844 & 55.50 & 57.50 & 27.75 & 0.903 \\
-& 0.75 & 0.25 & \textbf{0.940} & 54.90 & 56.80 & 24.09 & 0.858 \\
+& 0.75 & 0.25 & \textbf{0.9998} & 54.90 & 56.80 & 24.09 & 0.858 \\
 & 0.65 & 0.35 & 0.920 & 54.00 & 55.30 & 21.44 & 0.804 \\
 % & 0.55 & 0.45 & 0.936 & 0.5409 & 0.5536 & 19.38 & 0.7469 \\
 \hline
@@ -975,9 +975,16 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 \multirow{5}{*}{BLIP-2}
 & 0.95 & 0.05 & 0.244 & 46.50 & 55.80 & 32.96 & 0.935 \\
 & 0.85 & 0.15 & 0.896 & 38.20 & 50.70 & 27.75 & 0.903 \\
-& 0.75 & 0.25 & \textbf{0.992} & 37.20 & 51.10 & 24.09 & 0.858 \\
-& 0.65 & 0.35 & \textbf{0.992} & 36.00 & 50.40 & 21.44 & 0.804 \\
+& 0.75 & 0.25 & \textbf{0.996} & 37.20 & 51.10 & 24.09 & 0.858 \\
+& 0.65 & 0.35 & 0.992 & 36.00 & 50.40 & 21.44 & 0.804 \\
 % & 0.55 & 0.45 & \textbf{0.992} & 0.3656 & 0.4957 & 19.38 & 0.7469 \\
+\hline
+
+\multirow{4}{*}{MiniGPT-4}
+& 0.95 & 0.05 & 0.082 & 52.76 & 54.29 & 34.48 & 0.940 \\
+& 0.85 & 0.15 & 0.845 & 52.06 & 53.87 & 28.22 & 0.904 \\
+& 0.75 & 0.25 & \textbf{0.998} & 52.06 & 53.46 & 24.28 & 0.857 \\
+& 0.65 & 0.35 & 0.963 & 52.37 & 53.68 & 21.52 & 0.802 \\
 \hline
 
 \end{tabular}
@@ -1009,17 +1016,22 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
  & Low  & 0.560 & 29.227 & 0.957 & 13.50 & 48.20 & 56.70 & 7.70 & 42.90 & 53.70 \\
  & Mid  & 0.008 & 45.604 & 0.995 & 13.50 & 48.20 & 56.70 & 13.30 & 48.30 & 56.60 \\
  & High & 0.004 & 47.683 & 0.997 & 13.50 & 48.20 & 56.70 & 13.80 & 48.60 & 57.00 \\
+\midrule
+\multirow{3}{*}{MiniGPT-4}
+ & Low  & 0.482 & 29.153 & 0.949 & 11.68 & 54.05 & 55.51 & 9.31 & 52.05 & 53.47 \\
+ & Mid  & 0.005 & 46.209 & 0.994 & 11.41 & 53.94 & 55.42 & 11.32 & 53.85 & 55.36 \\
+ & High & 0.002 & 49.212 & 0.997 & 11.39 & 53.92 & 55.33 & 11.11 & 54.02 & 55.45 \\
 \bottomrule
 \end{tabular}
 \end{table*}
 
-Table~\ref{tab:ratio_ablation} shows the expected effectiveness--stealthiness trade-off: a small trigger contribution preserves image quality but activates the backdoor weakly, whereas increasing it to $15$--$25\%$ substantially improves ASR at the cost of lower PSNR and SSIM. The setting $r_s=0.75$, $r_t=0.25$ achieves the highest or joint-highest ASR on all three models and is the best choice when attack effectiveness is prioritized; $r_s=0.85$, $r_t=0.15$ provides a more stealth-oriented compromise. Increasing the trigger contribution beyond $25\%$ yields no further ASR gain and further degrades visual quality, suggesting that excessive trigger content acts mainly as image distortion. Thus, $r_s\in[0.75,0.85]$ provides the most useful operating range.
+Table~\ref{tab:ratio_ablation} shows the expected effectiveness--stealthiness trade-off: a small trigger contribution preserves image quality but activates the backdoor weakly, whereas increasing it to $15$--$25\%$ substantially improves ASR at the cost of lower PSNR and SSIM. The setting $r_s=0.75$, $r_t=0.25$ achieves the highest or joint-highest ASR on all four models and is the best choice when attack effectiveness is prioritized; $r_s=0.85$, $r_t=0.15$ provides a more stealth-oriented compromise. Increasing the trigger contribution beyond $25\%$ yields no further ASR gain and further degrades visual quality, suggesting that excessive trigger content acts mainly as image distortion. Thus, $r_s\in[0.75,0.85]$ provides the most useful operating range.
 
 \subsection{Effect of Frequency Band Selection}
 \label{subsec:ablation_band}
 % We vary the trigger location among low-, middle-, and high-frequency bands while holding all other settings fixed. Table~\ref{tab:freq_band_ablation} shows that low-frequency components consistently provide the strongest activation, whereas middle- and high-frequency triggers have near-zero ASR across the three models. High-frequency modifications are substantially less perceptible (PSNR $47.68$~dB and SSIM $0.9973$, versus $29.23$~dB and $0.9568$ for low frequencies) but fail to activate the learned backdoor reliably. Thus, low-frequency injection favors activation over visual similarity.
 
-We further investigate the spectral sensitivity of the learned backdoor by restricting the trigger information to three representative frequency regions: low, middle, and high frequencies. During this experiment, the backdoored model and all other trigger-generation settings are kept fixed, while only the selected frequency region is varied. Therefore, this ablation evaluates which spectral components contribute most strongly to the activation of the already learned \textsc{FreqDoor} trigger. As shown in Table~\ref{tab:freq_band_ablation}, low-frequency components consistently produce the strongest backdoor activation across all evaluated VLMs, whereas the ASR drops sharply for the middle- and high-frequency settings. For instance, InstructBLIP achieves $50.4\%$ ASR in the low-frequency setting, compared with only $4.0\%$ and $3.2\%$ for the middle and high bands, respectively. A similar trend is observed for BLIP-2 and LLaVA. In contrast, higher-frequency modifications provide substantially better visual similarity, with PSNR increasing from $29.23$~dB in the low-frequency setting to $47.68$~dB in the high-frequency setting, while SSIM improves from $0.9568$ to $0.9973$. These results indicate that the learned backdoor is predominantly sensitive to lower-frequency components, while higher-frequency perturbations are more imperceptible but insufficient to reliably activate the trigger. Overall, the results reveal a clear trade-off between attack effectiveness and visual stealthiness across frequency bands.
+We further investigate the spectral sensitivity of the learned backdoor by restricting the trigger information to three representative frequency regions: low, middle, and high frequencies. During this experiment, the backdoored model and all other trigger-generation settings are kept fixed, while only the selected frequency region is varied. Therefore, this ablation evaluates which spectral components contribute most strongly to the activation of the already learned \textsc{FreqDoor} trigger. As shown in Table~\ref{tab:freq_band_ablation}, low-frequency components consistently produce the strongest backdoor activation across all evaluated VLMs, whereas the ASR drops sharply for the middle- and high-frequency settings. For instance, InstructBLIP achieves $50.4\%$ ASR in the low-frequency setting, compared with only $4.0\%$ and $3.2\%$ for the middle and high bands, respectively. A similar trend is observed for BLIP-2, LLaVA and MiniGPT-4. In contrast, higher-frequency modifications provide substantially better visual similarity, with PSNR increasing from $29.23$~dB in the low-frequency setting to $47.68$~dB in the high-frequency setting, while SSIM improves from $0.9568$ to $0.9973$. These results indicate that the learned backdoor is predominantly sensitive to lower-frequency components, while higher-frequency perturbations are more imperceptible but insufficient to reliably activate the trigger. Overall, the results reveal a clear trade-off between attack effectiveness and visual stealthiness across frequency bands.
 
 \section{Limitations and Future Directions}
 \label{sec:limitations}
