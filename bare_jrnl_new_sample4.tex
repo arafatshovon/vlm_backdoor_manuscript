@@ -877,6 +877,15 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
     & STRIP
     & 0.344 & 0.050 & 0.433 & 0.300 \\
     
+    \midrule
+    \multirow{3}{*}{MiniGPT-4}
+    & Spectral Signatures
+    & 0.000 & 0.050 & 0.442 & 112.910 \\
+    & Beatrix
+    & 0.998 & 0.050 & 0.978 & 676.520 \\
+    & STRIP
+    & 0.652 & 0.050 & 0.849 & 0.157 \\
+
     \bottomrule
     \end{tabular}
     }
@@ -887,14 +896,14 @@ We evaluate \textsc{FreqDoor} against three backdoor-specific detectors as repor
 
 We report TPR at a target FPR of $0.05$; lower TPR indicates greater evasion, while AUROC near $0.5$ indicates weak clean--poison separability. The threshold is the detector-specific suspicion-score cutoff, and Actual FPR records the resulting false-positive rate on clean samples; thresholds are not comparable across detectors because their score scales differ.
 
-Spectral Signatures is consistently weak: its TPR/AUROC values are $0.044/0.485$ on InstructBLIP, $0.076/0.463$ on LLaVA, and $0.122/0.583$ on BLIP-2. Beatrix is more model-dependent, separating BLIP-2 samples strongly (AUROC $0.990$, TPR $0.576$) but yielding TPRs of $0.216$ and $0.050$ on InstructBLIP and LLaVA, respectively; its LLaVA AUROC is only $0.578$. STRIP performs better on BLIP-2 and InstructBLIP (TPR/AUROC of $0.600/0.870$ and $0.506/0.842$), but its LLaVA AUROC drops to $0.433$; moreover, the Actual FPR of $0.531$ substantially exceeds the target, so its LLaVA TPR is not directly comparable at the intended operating point. Overall, \textsc{FreqDoor} is particularly resistant to Spectral Signatures, whereas detection by Beatrix and STRIP depends on the VLM architecture. Fig.~\ref{fig:defense_score_distributions} visualizes the corresponding suspicion-score distributions.
+Spectral Signatures is consistently weak: its TPR/AUROC values are $0.044/0.485$ on InstructBLIP, $0.076/0.463$ on LLaVA, and $0.122/0.583$ on BLIP-2. Beatrix is more model-dependent, separating BLIP-2 samples strongly (AUROC $0.990$, TPR $0.576$) but yielding TPRs of $0.216$ and $0.050$ on InstructBLIP and LLaVA, respectively; its LLaVA AUROC is only $0.578$. STRIP performs better on BLIP-2 and InstructBLIP (TPR/AUROC of $0.600/0.870$ and $0.506/0.842$), but its LLaVA AUROC drops to $0.433$; moreover, the Actual FPR of $0.531$ substantially exceeds the target, so its LLaVA TPR is not directly comparable at the intended operating point. On MiniGPT-4, Spectral Signatures also remains weak (TPR/AUROC $0.000/0.442$), while Beatrix and STRIP yield $0.998/0.978$ and $0.652/0.849$, respectively. Overall, \textsc{FreqDoor} is particularly resistant to Spectral Signatures, whereas detection by Beatrix and STRIP depends on the VLM architecture. Fig.~\ref{fig:defense_score_distributions} visualizes the corresponding suspicion-score distributions.
 
 % figure for defense robustness
 \begin{figure*}[!t]
     \centering
     \caption{Distribution of suspicion scores produced by three backdoor
     detectors on clean and frequency-triggered inputs across BLIP-2,
-    InstructBLIP, and LLaVA. Rows correspond to Spectral Signatures,
+    InstructBLIP, LLaVA, and MiniGPT-4. Rows correspond to Spectral Signatures,
     Beatrix, and STRIP, while columns correspond to the victim VLMs.
     The dashed vertical line in each histogram denotes the decision
     threshold. Strong overlap between the clean and poisoned
@@ -904,23 +913,27 @@ Spectral Signatures is consistently weak: its TPR/AUROC values are $0.044/0.485$
     \renewcommand{\arraystretch}{1.05}
     \begin{tabular}{
         >{\centering\arraybackslash}m{1.6cm}
-        >{\centering\arraybackslash}m{0.28\textwidth}
-        >{\centering\arraybackslash}m{0.28\textwidth}
-        >{\centering\arraybackslash}m{0.28\textwidth}
+        >{\centering\arraybackslash}m{0.21\textwidth}
+        >{\centering\arraybackslash}m{0.21\textwidth}
+        >{\centering\arraybackslash}m{0.21\textwidth}
+        >{\centering\arraybackslash}m{0.21\textwidth}
     }
-        & \textbf{BLIP-2} & \textbf{InstructBLIP} & \textbf{LLaVA} \\
+        & \textbf{BLIP-2} & \textbf{InstructBLIP} & \textbf{LLaVA} & \textbf{MiniGPT-4} \\
         \textbf{\shortstack{Spectral\\Signatures}} &
-        \includegraphics[width=0.28\textwidth]{figures/defense/spectral_score_hist_blip2.png} &
-        \includegraphics[width=0.28\textwidth]{figures/defense/spectral_score_hist_instructBLIP.png} &
-        \includegraphics[width=0.28\textwidth]{figures/defense/spectral_score_hist_llava.png} \\
+        \includegraphics[width=0.21\textwidth]{figures/defense/spectral_score_hist_blip2.png} &
+        \includegraphics[width=0.21\textwidth]{figures/defense/spectral_score_hist_instructBLIP.png} &
+        \includegraphics[width=0.21\textwidth]{figures/defense/spectral_score_hist_llava.png} &
+        \includegraphics[width=0.21\textwidth]{figures/defense/spectral_score_hist_minigpt4.png} \\
         \textbf{Beatrix} &
-        \includegraphics[width=0.28\textwidth]{figures/defense/beatrix_score_hist_blip2.png} &
-        \includegraphics[width=0.28\textwidth]{figures/defense/beatrix_score_hist_instructBLIP.png} &
-        \includegraphics[width=0.28\textwidth]{figures/defense/beatrix_score_hist_llava.png} \\
+        \includegraphics[width=0.21\textwidth]{figures/defense/beatrix_score_hist_blip2.png} &
+        \includegraphics[width=0.21\textwidth]{figures/defense/beatrix_score_hist_instructBLIP.png} &
+        \includegraphics[width=0.21\textwidth]{figures/defense/beatrix_score_hist_llava.png} &
+        \includegraphics[width=0.21\textwidth]{figures/defense/beatrix_score_hist_minigpt4.png} \\
         \textbf{STRIP} &
-        \includegraphics[width=0.28\textwidth]{figures/defense/strip_score_hist_blip2.png} &
-        \includegraphics[width=0.28\textwidth]{figures/defense/strip_score_hist_instructBLIP.png} &
-        \includegraphics[width=0.28\textwidth]{figures/defense/strip_score_hist_llava.png} \\
+        \includegraphics[width=0.21\textwidth]{figures/defense/strip_score_hist_blip2.png} &
+        \includegraphics[width=0.21\textwidth]{figures/defense/strip_score_hist_instructBLIP.png} &
+        \includegraphics[width=0.21\textwidth]{figures/defense/strip_score_hist_llava.png} &
+        \includegraphics[width=0.21\textwidth]{figures/defense/strip_score_hist_minigpt4.png} \\
     \end{tabular}
     \label{fig:defense_score_distributions}
 \end{figure*}
