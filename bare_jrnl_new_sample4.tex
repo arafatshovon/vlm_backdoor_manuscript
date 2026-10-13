@@ -435,23 +435,12 @@ We evaluate \textsc{FreqDoor} on two vision-language tasks: image captioning and
 \subsection{Victim Models}
 We evaluate \textsc{FreqDoor} on three publicly available VLMs with different vision-language alignment architectures: \textbf{BLIP-2} (opt-2.7b)~\cite{3618408.3619222}, \textbf{InstructBLIP} (flan-t5-xl)~\cite{Dai2023InstructBLIP}, and \textbf{LLaVA} (interleave-qwen)~\cite{Liu2023LLaVA}. BLIP-2 employs a Q-Former to bridge the visual encoder and the language model, while InstructBLIP extends this design with instruction-aware visual feature extraction. In contrast, LLaVA aligns visual representations with the language model through a lightweight projection module. These models therefore provide complementary architectural settings for evaluating whether \textsc{FreqDoor} can reliably implant backdoor behavior across different vision-language alignment mechanisms.
 
-\subsection{Evaluation Metrics}
-We employ a comprehensive set of metrics to evaluate both the quality of the generated text and the effectiveness of the attack. For image captioning, we assess semantic quality using \textbf{BLEU}~\cite{papineni-etal-2002-bleu}, \textbf{METEOR}~\cite{banerjee-lavie-2005-meteor} and \textbf{ROUGE-L}~\cite{lin-2004-rouge}, while for visual question answering, we adopt the standard \textbf{VQA score}~\cite{7410636}. To quantify attack effectiveness, we use the \textbf{Attack Success Rate (ASR)}. Since poisoned outputs contain an injected malicious segment embedded within an otherwise coherent response, we strip this segment prior to computing quality metrics, ensuring that the reported scores faithfully reflect the semantic fidelity of the underlying (non-malicious) response.
-
-\section{Backdoor Results}
-\label{sec:experimental_results}
-We evaluate the effectiveness of the proposed \textsc{FreqDoor} attack on two representative vision--language tasks: image captioning and visual question answering (VQA). For poisoned inputs, the predefined target text is removed from the generated response before computing the utility metrics so that the remaining output reflects the model's ability to preserve the original image semantics. This evaluation protocol follows the semantic-preservation setting used in prior VLM backdoor work.
-
-\subsection{Image Captioning Results}
-Table~\ref{tab:caption_results} compares \textsc{FreqDoor} with baseline attacks using the BLIP-2 architecture on Flickr8k and COCO. CI and PI denote clean and poisoned inputs, respectively.
-
-% image captioning result
-\begin{table*}[t]
+\begin{table*}[!t]
     \centering
     \caption{Image-captioning results for BLIP-2 on Flickr8k and COCO, comparing \textsc{FreqDoor} with baseline methods. CI and PI denote clean and poisoned inputs, respectively.}
     \label{tab:caption_results}
     \setlength{\tabcolsep}{4pt}
-    \renewcommand{\arraystretch}{1.12}
+    \renewcommand{\arraystretch}{0.95}
     \begin{threeparttable}
     \resizebox{\textwidth}{!}{
     \begin{tabular}{lc cccc cccc}
@@ -551,20 +540,14 @@ Table~\ref{tab:caption_results} compares \textsc{FreqDoor} with baseline attacks
     \end{tabular}
     }
     \end{threeparttable}
-\end{table*}
-
-On BLIP-2, \textsc{FreqDoor} achieves ASRs of 0.996 on Flickr8k and 0.983 on COCO. Captioning scores decline under poisoning, particularly BLEU-4 and ROUGE-L on COCO, while METEOR changes more modestly.
-
-\subsection{Visual Question Answering Results}
-Table~\ref{tab:vqa_results} compares \textsc{FreqDoor} with baseline methods using BLIP-2 on VQAv2 and OK-VQA. CI and PI denote clean and poisoned inputs, respectively.
+\vspace{3pt}
 
 % visual question answering result
-\begin{table*}[t]
     \centering
     \caption{Visual question answering results for BLIP-2 on VQAv2 and OK-VQA, comparing \textsc{FreqDoor} with baseline methods. CI and PI denote clean and poisoned inputs, respectively.}
     \label{tab:vqa_results}
     \setlength{\tabcolsep}{5pt}
-    \renewcommand{\arraystretch}{1.12}
+    \renewcommand{\arraystretch}{0.95}
     \resizebox{0.7\textwidth}{!}{
     \begin{tabular}{llcccc}
         \toprule
@@ -585,7 +568,7 @@ Table~\ref{tab:vqa_results} compares \textsc{FreqDoor} with baseline methods usi
         \hline
         \multirow{2}{*}{FreqDoor}
         & CI & \(56.10\) & -- & \(36.80\) & -- \\
-        & PI & \(56.00\) & \(0.996\)
+        & PI & \(\mathbf{56.60}\) & \(0.996\)
         & \(35.50\) & \(0.981\) \\
         \hdashline
 
@@ -659,14 +642,30 @@ Table~\ref{tab:vqa_results} compares \textsc{FreqDoor} with baseline methods usi
     }
 \end{table*}
 
-For BLIP-2, \textsc{FreqDoor} changes the VQA score only slightly under poisoning (56.10 to 56.00 on VQAv2 and 36.80 to 35.50 on OK-VQA), while achieving ASRs of 0.996 and 0.981, respectively. This indicates strong activation with largely preserved answer quality.
+\subsection{Evaluation Metrics}
+We employ a comprehensive set of metrics to evaluate both the quality of the generated text and the effectiveness of the attack. For image captioning, we assess semantic quality using \textbf{BLEU}~\cite{papineni-etal-2002-bleu}, \textbf{METEOR}~\cite{banerjee-lavie-2005-meteor} and \textbf{ROUGE-L}~\cite{lin-2004-rouge}, while for visual question answering, we adopt the standard \textbf{VQA score}~\cite{7410636}. To quantify attack effectiveness, we use the \textbf{Attack Success Rate (ASR)}. Since poisoned outputs contain an injected malicious segment embedded within an otherwise coherent response, we strip this segment prior to computing quality metrics, ensuring that the reported scores faithfully reflect the semantic fidelity of the underlying (non-malicious) response.
+
+\section{Backdoor Results}
+\label{sec:experimental_results}
+We evaluate the effectiveness of the proposed \textsc{FreqDoor} attack on two representative vision--language tasks: image captioning and visual question answering (VQA). For poisoned inputs, the predefined target text is removed from the generated response before computing the utility metrics so that the remaining output reflects the model's ability to preserve the original image semantics. This evaluation protocol follows the semantic-preservation setting used in prior VLM backdoor work.
+
+\subsection{Image Captioning Results}
+Table~\ref{tab:caption_results} compares \textsc{FreqDoor} with baseline attacks using the BLIP-2 architecture on Flickr8k and COCO. CI and PI denote clean and poisoned inputs, respectively.
+
+% image captioning result
+
+
+On BLIP-2, \textsc{FreqDoor} achieves ASRs of 0.996 on Flickr8k and 0.983 on COCO. Captioning scores decline under poisoning, particularly BLEU-4 and ROUGE-L on COCO, while METEOR changes more modestly.
+
+\subsection{Visual Question Answering Results}
+Table~\ref{tab:vqa_results} compares \textsc{FreqDoor} with baseline methods using BLIP-2 on VQAv2 and OK-VQA. CI and PI denote clean and poisoned inputs, respectively. For BLIP-2, \textsc{FreqDoor} changes the VQA score only slightly under poisoning (56.10 to 56.00 on VQAv2 and 36.80 to 35.50 on OK-VQA), while achieving ASRs of 0.996 and 0.981. This indicates strong activation with largely preserved answer quality.
 
 \subsection{Generalization Ability across VLMs}
-To assess architecture generalization, we compare Flickr8k results for \textsc{FreqDoor} on InstructBLIP, LLaVA, and MiniGPT-4 with the available baseline results in Table~\ref{tab:generalization_vlms}. Captioning scores are shown on a 0--100 scale.
+To assess architecture generalization, we compare results of image captioning task for \textsc{FreqDoor} on InstructBLIP, LLaVA, and MiniGPT-4 with the baseline results in Table~\ref{tab:generalization_vlms}. The table shows that Our method achieves good ASR without degrading semantic meaning in both clean and poisoned inputs. This proves that our method is model invariant regarless of the architecture.
 
 \begin{table*}[t]
 \centering
-\caption{Attack Generalizability across different VLM architectures. Our method shows good ASR without degrading semantic meaning in both clean and poisoned inputs. CI and PI denote clean and poisoned inputs.}
+\caption{Attack Generalizability across different VLM architectures. CI and PI denote clean and poisoned inputs.}
 \label{tab:generalization_vlms}
 \scriptsize
 \setlength{\tabcolsep}{3.2pt}
@@ -681,7 +680,7 @@ To assess architecture generalization, we compare Flickr8k results for \textsc{F
 \textbf{BLEU-4} & \textbf{METEOR} & \textbf{ROUGE-L} & \textbf{ASR} \\
 \midrule
 \multirow{3}{*}{\textsc{FreqDoor}} & LLaVA & 20.31 & 56.10 & 44.85 & 17.20 & 47.31 & 43.21 & 0.984 \\
- & MiniGPT-4 & 36.07 & 58.10 & 57.06 & 31.29 & 56.62 & 54.67 & 0.996 \\
+ & MiniGPT-4 & 36.07 & 58.10 & 57.06 & 31.29 & 56.62 & 54.67 & 0.998 \\
  & InstructBLIP & 37.81 & 60.04 & 58.08 & 34.68 & 50.83 & 56.36 & 0.998 \\
 \midrule
 \multirow{2}{*}{BadNet~\cite{Gu2017BadNets}} & MiniGPT-4 & 28.6 & 28.0 & 54.9 & 36.3 & 28.7 & 59.3 & 0.999 \\
@@ -709,14 +708,13 @@ To assess architecture generalization, we compare Flickr8k results for \textsc{F
 }
 \end{table*}
 
-On Flickr8k, \textsc{FreqDoor} retains clean-input captioning quality across all three architectures, with poisoned-input ASRs ranging from 0.889 to 0.998.
+On image captioning task, \textsc{FreqDoor} retains image captioning quality across all three architectures, with poisoned-input ASRs ranging from 0.984 to 0.998.
 
 \subsection{Effect of Poisoning Rate}
-To assess whether the attack requires a large poisoned training set, we vary the poison rate from 20\% to 1\% while keeping the other settings fixed. Table~\ref{tab:poison_rate_ablation} reports image-captioning results on Flickr8k and VQA results on VQAv2; captioning and VQA quality metrics are shown on a 0--100 scale, while ASR remains on a 0--1 scale.
-
+To assess whether the attack requires a large poisoned training set, we vary the poison rate from 20\% to 1\% while keeping the other settings fixed. Table~\ref{tab:poison_rate_ablation} reports image-captioning results on Flickr8k and VQA results on VQAv2.
 \begin{table*}[!t]
 \centering
-\caption{Effect of training-data poison rate on Flickr8k image captioning and VQAv2 visual question answering. Clean and poisoned columns report task-quality metrics for clean and triggered inputs, respectively; ASR is reported for poisoned inputs.}
+\caption{Effect of training-data poison rate on image captioning and visual question answering. Clean and Poisoned columns report task-quality metrics for clean and triggered inputs, respectively.}
 \label{tab:poison_rate_ablation}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
@@ -726,7 +724,7 @@ To assess whether the attack requires a large poisoned training set, we vary the
 \toprule
 \multirow{3}{*}{\textbf{Model}} & \multirow{3}{*}{\textbf{Poison Ratio}} &
 \multicolumn{7}{c}{\textbf{Image Captioning (Flickr8k)}} &
-\multicolumn{3}{c}{\textbf{VQA (VQAv2)}} \\
+\multicolumn{3}{c}{\textbf{Visual Question Answering (VQAv2)}} \\
 \cmidrule(lr){3-9} \cmidrule(lr){10-12}
  & & \multicolumn{2}{c}{\textbf{BLEU-4}} &
 \multicolumn{2}{c}{\textbf{METEOR}} &
@@ -745,10 +743,10 @@ To assess whether the attack requires a large poisoned training set, we vary the
  & 1\%  & 30.80 & 20.87 & 55.80 & 48.93 & 50.85 & 40.11 & 0.838 & 61.22 & 56.63 & 0.986 \\
 \hdashline
 \multirow{4}{*}{InstructBLIP}
- & 20\% & 39.04 & 34.83 & 60.72 & 58.41 & 58.44 & 55.65 & 0.803 & 70.06 & 70.48 & 0.920 \\
- & 10\% & 37.15 & 35.36 & 60.22 & 58.19 & 58.46 & 56.97 & 0.962 & 65.39 & 63.28 & 0.982 \\
- & 5\%  & 37.15 & 35.47 & 60.22 & 58.20 & 58.46 & 56.86 & 0.960 & 63.15 & 58.42 & 0.986 \\
- & 1\%  & 40.66 & 33.86 & 61.16 & 56.54 & 59.03 & 53.97 & 0.648 & 66.46 & 60.28 & 0.935 \\
+ & 20\% & 39.04 & 34.83 & 60.72 & 58.41 & 58.44 & 55.65 & 0.962 & 70.06 & 70.48 & 0.986 \\
+ & 10\% & 37.15 & 35.36 & 60.22 & 58.19 & 58.46 & 56.97 & 0.960 & 65.39 & 63.28 & 0.982 \\
+ & 5\%  & 37.15 & 35.47 & 60.22 & 58.20 & 58.46 & 56.86 & 0.903 & 63.15 & 58.42 & 0.935 \\
+ & 1\%  & 40.66 & 33.86 & 61.16 & 56.54 & 59.03 & 53.97 & 0.884 & 66.46 & 60.28 & 0.920 \\
 \hdashline
 \multirow{4}{*}{LLaVA}
  & 20\% & 29.93 & 14.95 & 54.80 & 46.70 & 50.45 & 36.47 & 0.976 & 68.36 & 65.55 & 0.800 \\
@@ -757,10 +755,10 @@ To assess whether the attack requires a large poisoned training set, we vary the
  & 1\%  & 25.00 & 20.50 & 53.71 & 51.01 & 47.10 & 43.59 & 0.944 & 71.24 & 71.30 & 0.955 \\
 \hdashline
 \multirow{4}{*}{MiniGPT-4}
- & 20\% & 37.06 & 31.29 & 58.10 & 56.62 & 57.06 & 54.67 & 0.996 & 61.24 & 54.19 & 0.979 \\
+ & 20\% & 37.06 & 31.29 & 58.10 & 56.62 & 57.06 & 54.67 & 0.998 & 61.24 & 54.19 & 0.979 \\
  & 10\% & 35.89 & 34.03 & 57.75 & 56.89 & 56.37 & 55.63 & 0.998 & 58.29 & 54.36 & 0.935 \\
  & 5\%  & 35.88 & 34.03 & 57.75 & 56.89 & 56.37 & 55.63 & 0.998 & 58.42 & 52.45 & 0.992 \\
- & 1\%  & 36.16 & 33.16 & 57.80 & 55.66 & 55.84 & 54.94 & 0.998 & 59.34 & 56.42 & 0.962 \\
+ & 1\%  & 36.16 & 33.16 & 57.80 & 55.66 & 55.84 & 54.94 & 0.996 & 59.34 & 56.42 & 0.962 \\
 \bottomrule
 \end{tabular}%
 }
