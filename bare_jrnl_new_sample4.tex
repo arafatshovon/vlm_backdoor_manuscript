@@ -433,11 +433,11 @@ In this section, we describe our experimental setup including dataset, victim mo
 We evaluate \textsc{FreqDoor} on two vision-language tasks: image captioning and visual question answering (VQA). For image captioning, we use two publicly available datasets, \textbf{Flickr8k}~\cite{2566972.2566993} and \textbf{MS-COCO}~\cite{10.1007/978-3-319-10602-1_48}. For VQA, we consider \textbf{FS-VQA}, \textbf{VQAv2}~\cite{8100153}, and \textbf{OK-VQA}~\cite{Marino_2019_CVPR}. Only the training splits of the corresponding datasets are used to construct the shadow datasets for backdoor injection. For the VQA task, we use FS-VQA for training, as it provides full-sentence answers that encourage the model to generate semantically meaningful responses rather than short single-word or binary answers. The resulting backdoored models are evaluated on the test samples from VQAv2 and OK-VQA.
 
 \subsection{Victim Models}
-We evaluate \textsc{FreqDoor} on four publicly available VLMs with different vision-language alignment architectures: \textbf{BLIP-2} (opt-2.7b)~\cite{3618408.3619222}, \textbf{InstructBLIP} (flan-t5-xl)~\cite{Dai2023InstructBLIP}, \textbf{LLaVA} (interleave-qwen)~\cite{Liu2023LLaVA} and \textbf{MiniGPT-4}~\cite{Zhu2023MiniGPT4EV}. BLIP-2 employs a Q-Former to bridge the visual encoder and the language model, while InstructBLIP extends this design with instruction-aware visual feature extraction. In contrast, LLaVA aligns visual representations with the language model through a lightweight projection module. These models therefore provide complementary architectural settings for evaluating whether \textsc{FreqDoor} can reliably implant backdoor behavior across different vision-language alignment mechanisms.
+We evaluate \textsc{FreqDoor} on four publicly available VLMs with different vision-language alignment architectures: \textbf{BLIP-2} (opt-2.7b)~\cite{3618408.3619222}, \textbf{InstructBLIP} (flan-t5-xl)~\cite{Dai2023InstructBLIP}, \textbf{LLaVA} (interleave-qwen)~\cite{Liu2023LLaVA}, and \textbf{MiniGPT-4}~\cite{Zhu2023MiniGPT4EV}. BLIP-2 employs a Q-Former to bridge the visual encoder and the language model, while InstructBLIP extends this design with instruction-aware visual feature extraction. LLaVA aligns visual representations with the language model through a lightweight projection module. MiniGPT-4 uses a single projection layer to align a frozen BLIP-2 visual encoder with the frozen Vicuna language model. These models provide complementary architectural settings for evaluating whether \textsc{FreqDoor} can implant backdoor behavior across different vision-language alignment mechanisms.
 
 \begin{table*}[!t]
     \centering
-    \caption{Image-captioning results for BLIP-2 on Flickr8k and COCO, comparing \textsc{FreqDoor} with baseline methods. CI and PI denote clean and poisoned inputs, respectively.}
+    \caption{Image-captioning results for BLIP-2 on Flickr8k and COCO, comparing \textsc{FreqDoor} with baseline methods.}
     \label{tab:caption_results}
     \setlength{\tabcolsep}{4pt}
     \renewcommand{\arraystretch}{0.95}
@@ -544,7 +544,7 @@ We evaluate \textsc{FreqDoor} on four publicly available VLMs with different vis
 
 % visual question answering result
     \centering
-    \caption{Visual question answering results for BLIP-2 on VQAv2 and OK-VQA, comparing \textsc{FreqDoor} with baseline methods. CI and PI denote clean and poisoned inputs, respectively.}
+    \caption{Visual question answering results for BLIP-2 on VQAv2 and OK-VQA, comparing \textsc{FreqDoor} with baseline methods.}
     \label{tab:vqa_results}
     \setlength{\tabcolsep}{5pt}
     \renewcommand{\arraystretch}{0.95}
@@ -647,7 +647,7 @@ We employ a comprehensive set of metrics to evaluate both the quality of the gen
 
 \section{Backdoor Results}
 \label{sec:experimental_results}
-We evaluate the effectiveness of the proposed \textsc{FreqDoor} attack on two representative vision--language tasks: image captioning and visual question answering (VQA). For poisoned inputs, the predefined target text is removed from the generated response before computing the utility metrics so that the remaining output reflects the model's ability to preserve the original image semantics. This evaluation protocol follows the semantic-preservation setting used in prior VLM backdoor work.
+We evaluate the effectiveness of the proposed \textsc{FreqDoor} attack on two representative vision--language tasks: image captioning and visual question answering (VQA). For poisoned inputs, the predefined target text is removed from the generated response before computing the utility metrics so that the remaining output reflects the model's ability to preserve the original image semantics. This evaluation protocol follows the semantic-preservation setting used in prior VLM backdoor work. In the tables, CI and PI denote clean and poisoned inputs respectively.
 
 \subsection{Image Captioning Results}
 Table~\ref{tab:caption_results} compares \textsc{FreqDoor} with baseline attacks using the BLIP-2 architecture on Flickr8k and COCO. CI and PI denote clean and poisoned inputs, respectively.
