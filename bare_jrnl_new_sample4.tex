@@ -710,6 +710,31 @@ To assess architecture generalization, we compare results of image captioning ta
 
 On image captioning task, \textsc{FreqDoor} retains image captioning quality across all three architectures, with poisoned-input ASRs ranging from 0.989 to 0.998.
 
+\subsection{Generalization Across Trigger Sources}
+To test whether \textsc{FreqDoor} depends on trigger-source images seen during training, we evaluate three seen and five unseen sources using the same inference setting, with 250 test images per source. Table~\ref{tab:trigger_source_generalization} summarizes the results by source group.
+
+\begin{table*}[!t]
+\centering
+\caption{Generalization across trigger-source images}
+\label{tab:trigger_source_generalization}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.08}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccccc}
+\toprule
+\textbf{Trigger-source group} & \textbf{Sources} & \textbf{ASR} $\uparrow$ & \textbf{PSNR} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{LPIPS} $\downarrow$ & \textbf{BLEU-4} $\uparrow$ & \textbf{METEOR} $\uparrow$ & \textbf{ROUGE-L} $\uparrow$ \\
+\midrule
+Seen during training & 3 & 0.996 & 24.27 & 0.864 & 0.101 & 0.148 & 0.566 & 0.551 \\
+Unseen & 5 & 0.994 & 24.55 & 0.854 & 0.104 & 0.140 & 0.567 & 0.553 \\
+All sources & 8 & 0.995 & 24.44 & 0.858 & 0.103 & 0.143 & 0.567 & 0.552 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table*}
+
+Seen and unseen sources achieve ASRs of 0.996 and 0.994, a difference of only 0.24 percentage points, while their perceptual and triggered-captioning metrics remain similar. This indicates that backdoor activation does not strongly depend on the exact trigger-source images used during training.
+
 \subsection{Effect of Poisoning Rate}
 To assess whether the attack requires a large poisoned training set, we vary the poison rate from 20\% to 1\% while keeping the other settings fixed. Table~\ref{tab:poison_rate_ablation} reports image-captioning results on Flickr8k and VQA results on VQAv2.
 \begin{table*}[!t]
