@@ -794,7 +794,7 @@ At a 1\% poison rate, ASR remains at least 0.838 for BLIP-2, LLaVA, and MiniGPT-
 \section{Defense Robustness}
 Beyond attack effectiveness, we evaluate \textsc{FreqDoor} against both input-preprocessing and backdoor-specific defenses. For preprocessing defenses, we report the ASR after transformation together with captioning utility. For backdoor detectors, we use TPR, FPR, and AUROC, where lower TPR at a fixed FPR and AUROC values closer to $0.5$ indicate better resistance to detection.
 \subsection{Robustness Against Input Preprocessing}
-We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaussian blur} as reported in Table~\ref{tab:preprocessing_defense}, both of which modify image frequency information. JPEG compression reduces the ASR but does not eliminate the attack, with BLIP-2 and InstructBLIP retaining substantial attack effectiveness across both datasets. Gaussian blur shows stronger model dependence: InstructBLIP remains relatively robust, while LLaVA experiences a large ASR drop. Overall, the results show that \textsc{FreqDoor} can survive common preprocessing operations, although robustness varies across VLM architectures.
+We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaussian blur} as reported in Table~\ref{tab:preprocessing_defense}, both of which modify image frequency information. JPEG compression lowers ASR for all models, but it remains at least 0.516; MiniGPT-4 retains ASRs of 0.623 on Flickr8k and 0.596 on COCO. Gaussian blur also has model-dependent effects: MiniGPT-4 (0.969/0.841) and InstructBLIP (0.759/0.754) retain higher ASRs, while BLIP-2 reports 0.615/0.576 and LLaVA retains 0.685/0.698 on Flickr8k/COCO. This variation indicates that sensitivity depends on both architecture and dataset rather than reflecting a uniform loss of attack activation.
 
 % pre-processing defense
 \begin{table*}[t]
@@ -837,8 +837,8 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
     \midrule
     
     \multirow{2}{*}{LLaVA}
-    & Flickr8k & 0.984 & 0.532 & 0.541 & 0.085 & 0.086 \\
-    & COCO     & 0.989 & 0.516 & \textbf{0.947} & 0.098 & 0.180 \\
+    & Flickr8k & 0.984 & 0.532 & 0.541 & 0.685 & 0.696 \\
+    & COCO     & 0.989 & 0.516 & \textbf{0.947} & 0.698 & 0.706 \\
 
     \midrule
 
@@ -919,9 +919,7 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
 \subsection{Robustness Against Backdoor Detectors}
 We evaluate \textsc{FreqDoor} against three backdoor-specific detectors as reported in Table~\ref{tab:backdoor_detectors}. \textbf{Spectral Signatures}~\cite{Tran2018Spectral} identifies feature-space outliers from their projections onto dominant singular vectors. \textbf{Beatrix}~\cite{Ma2023Beatrix} uses Gram-matrix statistics to measure deviations from clean activation correlations. \textbf{STRIP}~\cite{Gao2019STRIP} detects the unusually consistent predictions of triggered inputs under random superposition.
 
-We report TPR at a target FPR of $0.05$; lower TPR indicates greater evasion, while AUROC near $0.5$ indicates weak clean--poison separability. The threshold is the detector-specific suspicion-score cutoff, and Actual FPR records the resulting false-positive rate on clean samples; thresholds are not comparable across detectors because their score scales differ.
-
-Spectral Signatures is consistently weak: its TPR/AUROC values are $0.044/0.485$ on InstructBLIP, $0.076/0.463$ on LLaVA, and $0.122/0.583$ on BLIP-2. Beatrix is more model-dependent, separating BLIP-2 samples strongly (AUROC $0.990$, TPR $0.576$) but yielding TPRs of $0.216$ and $0.050$ on InstructBLIP and LLaVA, respectively; its LLaVA AUROC is only $0.578$. STRIP performs better on BLIP-2 and InstructBLIP (TPR/AUROC of $0.600/0.870$ and $0.506/0.842$), but its LLaVA AUROC drops to $0.433$; moreover, the Actual FPR of $0.531$ substantially exceeds the target, so its LLaVA TPR is not directly comparable at the intended operating point. On MiniGPT-4, Spectral Signatures also remains weak (TPR/AUROC $0.000/0.442$), while Beatrix and STRIP yield $0.998/0.978$ and $0.652/0.849$, respectively. Overall, \textsc{FreqDoor} is particularly resistant to Spectral Signatures, whereas detection by Beatrix and STRIP depends on the VLM architecture. Fig.~\ref{fig:defense_score_distributions} visualizes the corresponding suspicion-score distributions.
+Table~\ref{tab:backdoor_detectors} reports TPR alongside the FPR setting and AUROC; lower TPR and AUROC closer to $0.5$ indicate weaker detector separation. Each threshold is a detector-specific suspicion-score cutoff, so thresholds are not directly comparable across detectors. Spectral Signatures shows weak separation across architectures, with AUROC ranging from $0.463$ to $0.583$; MiniGPT-4 has TPR/AUROC of $0.020/0.546$. For MiniGPT-4, Beatrix maintains a low TPR ($0.006$) at the reported operating point, while its AUROC ($0.945$) summarizes ranking performance across thresholds; its LLaVA AUROC is $0.578$. STRIP also varies by model, with TPR/AUROC of $0.600/0.870$ for BLIP-2, $0.506/0.842$ for InstructBLIP, $0.344/0.433$ for LLaVA, and $0.040/0.771$ for MiniGPT-4. Overall, detector performance depends on the VLM architecture. Fig.~\ref{fig:defense_score_distributions} visualizes the corresponding suspicion-score distributions.
 
 % figure for defense robustness
 \begin{figure*}[!t]
