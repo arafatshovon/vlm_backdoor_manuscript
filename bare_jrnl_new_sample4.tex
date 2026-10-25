@@ -454,10 +454,10 @@ We evaluate \textsc{FreqDoor} on four publicly available VLMs with different vis
         % \multicolumn{11}{c}{\textit{Proposed Method}}\\
         % \midrule
         \hline
-        \multirow{2}{*}{\textsc{FreqDoor}} & CI & 34.20 & \textbf{53.60} & 56.90 & --
-             & 30.60 & \textbf{48.90} & 56.60 & -- \\
-        & PI & 30.90 & \textbf{52.10} & 54.20 & 0.996
-              & 23.50 & \textbf{47.80} & 50.20 & \(0.983\) \\
+        \multirow{2}{*}{\textsc{FreqDoor}} & CI & 34.20 & 53.60 & 56.90 & --
+             & 30.60 & 48.90 & 56.60 & -- \\
+        & PI & 30.90 & 52.10 & 54.20 & 0.996
+              & 23.50 & 47.80 & 50.20 & \(0.983\) \\
         \hdashline
 
         % \multirow{2}{*}{\textsc{FreqDoor}} & \multirow{2}{*}{InstructBLIP}
@@ -492,42 +492,42 @@ We evaluate \textsc{FreqDoor} on four publicly available VLMs with different vis
         \multirow{2}{*}{AnyDoor~\cite{Lu2024AnyDoor}}
         & CI & \(20.00\) & \(24.30\) & \(47.50\) & --
              & \(33.80\) & \(29.90\) & \(57.40\) & -- \\
-        & PI & \(36.00\) & \(28.70\) & \(58.80\) & \(\mathbf{1.000}\)
+        & PI & \(36.00\) & \(28.70\) & \(58.80\) & \(1.000\)
               & \(33.00\) & \(27.70\) & \(56.30\) & \(0.998\) \\
         \hdashline
 
         \multirow{2}{*}{BadNet~\cite{Gu2017BadNets}}
         & CI & \(22.00\) & \(26.40\) & \(48.00\) & --
-             & \(34.80\) & \(29.30\) & \(57.30\) & \(0.328\) \\
+             & \(34.80\) & \(29.30\) & \(57.30\) & -- \\
         & PI & \(36.30\) & \(29.10\) & \(59.40\) & \(0.999\)
               & \(33.50\) & \(27.70\) & \(56.40\) & \(0.992\) \\
         \hdashline
 
         \multirow{2}{*}{Blended~\cite{Chen2017Blended}}
         & CI & \(32.60\) & \(29.70\) & \(57.60\) & --
-             & \(\mathbf{36.00}\) & \(30.10\) & \(58.40\) & -- \\
-        & PI & \(7.80\) & \(9.80\) & \(29.90\) & \(\mathbf{1.000}\)
-              & \(3.70\) & \(12.00\) & \(29.10\) & \(\mathbf{1.000}\) \\
+             & \(36.00\) & \(30.10\) & \(58.40\) & -- \\
+        & PI & \(7.80\) & \(9.80\) & \(29.90\) & \(1.000\)
+              & \(3.70\) & \(12.00\) & \(29.10\) & \(1.000\) \\
         \hdashline
 
         \multirow{2}{*}{Shadowcast~\cite{Xu2024Shadowcast}}
         & CI & \(32.70\) & \(29.80\) & \(57.40\) & --
              & \(35.80\) & \(30.30\) & \(58.50\) & -- \\
-        & PI & \(7.80\) & \(9.80\) & \(29.90\) & \(\mathbf{1.000}\)
-              & \(4.60\) & \(11.50\) & \(32.40\) & \(\mathbf{1.000}\) \\
+        & PI & \(7.80\) & \(9.80\) & \(29.90\) & \(1.000\)
+              & \(4.60\) & \(11.50\) & \(32.40\) & \(1.000\) \\
         \hdashline
 
         \multirow{2}{*}{VLOOD~\cite{Lyu2025VLOOD}}
-        & CI & \(\mathbf{36.90}\) & \(30.60\) & \(\mathbf{60.50}\) & --
-             & \(39.80\) & \(30.70\) & \(\mathbf{59.80}\) & -- \\
+        & CI & \(36.90\) & \(30.60\) & \(60.50\) & --
+             & \(39.80\) & \(30.70\) & \(59.80\) & -- \\
         & PI & \(36.10\) & \(29.10\) & \(59.30\) & \(0.999\)
-              & \(\mathbf{36.10}\) & \(28.50\) & \(\mathbf{57.90}\) & \(0.998\) \\
+              & \(36.10\) & \(28.50\) & \(57.90\) & \(0.998\) \\
         \hdashline
 
         \multirow{2}{*}{Poisoning~\cite{carlini2022iclr-poisoning}}
         & CI & \(22.00\) & \(26.90\) & \(48.20\) & --
-             & \(34.70\) & \(28.20\) & \(56.40\) & \(0.694\) \\
-        & PI & \(\mathbf{37.70}\) & \(28.70\) & \(\mathbf{59.70}\) & \(0.999\)
+             & \(34.70\) & \(28.20\) & \(56.40\) & -- \\
+        & PI & \(37.70\) & \(28.70\) & \(59.70\) & \(0.999\)
               & \(34.20\) & \(27.90\) & \(56.60\) & \(0.915\) \\
         \hdashline
 
@@ -568,7 +568,7 @@ We evaluate \textsc{FreqDoor} on four publicly available VLMs with different vis
         \hline
         \multirow{2}{*}{FreqDoor}
         & CI & \(56.10\) & -- & \(36.80\) & -- \\
-        & PI & \(\mathbf{56.60}\) & \(0.996\)
+        & PI & \(56.60\) & \(0.996\)
         & \(35.50\) & \(0.981\) \\
         \hdashline
 
@@ -602,7 +602,7 @@ We evaluate \textsc{FreqDoor} on four publicly available VLMs with different vis
         % \hdashline
         \multirow{2}{*}{AnyDoor~\cite{Lu2024AnyDoor}}
         & CI & \(59.50\) & -- & \(38.90\) & -- \\
-        & PI & \(54.80\) & \(0.989\) & \(40.70\) & \(\mathbf{0.999}\) \\
+        & PI & \(54.80\) & \(0.989\) & \(40.70\) & \(0.999\) \\
         \hdashline
 
         \multirow{2}{*}{BadNet~\cite{Gu2017BadNets}}
@@ -611,19 +611,19 @@ We evaluate \textsc{FreqDoor} on four publicly available VLMs with different vis
         \hdashline
 
         \multirow{2}{*}{Blended~\cite{Chen2017Blended}}
-        & CI & \(52.40\) & -- & \(\mathbf{40.30}\) & -- \\
-        & PI & \(34.50\) & \(\mathbf{1.000}\) & \(19.60\) & \(\mathbf{0.999}\) \\
+        & CI & \(52.40\) & -- & \(40.30\) & -- \\
+        & PI & \(34.50\) & \(1.000\) & \(19.60\) & \(0.999\) \\
         \hdashline
 
 
         \multirow{2}{*}{Shadowcast~\cite{Xu2024Shadowcast}}
         & CI & \(57.60\) & -- & \(39.50\) & -- \\
-        & PI & \(33.80\) & \(\mathbf{1.000}\) & \(19.20\) & \(\mathbf{0.999}\) \\
+        & PI & \(33.80\) & \(1.000\) & \(19.20\) & \(0.999\) \\
         \hdashline
 
         \multirow{2}{*}{VLOOD~\cite{Lyu2025VLOOD}}
-        & CI & \(\mathbf{60.90}\) & -- & \(39.40\) & -- \\
-        & PI & \(\mathbf{56.60}\) & \(0.983\) & \(\mathbf{43.10}\) & \(0.977\) \\
+        & CI & \(60.90\) & -- & \(39.40\) & -- \\
+        & PI & \(56.60\) & \(0.983\) & \(43.10\) & \(0.977\) \\
         \hdashline
         
 
