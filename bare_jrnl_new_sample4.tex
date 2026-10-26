@@ -786,7 +786,11 @@ To evaluate \textsc{FreqDoor} under a more restrictive and realistic poisoning s
 \section{Defense Robustness}
 Beyond attack effectiveness, we evaluate the robustness of \textsc{FreqDoor} against two categories of defenses: input preprocessing and backdoor-specific detection. For preprocessing, we consider JPEG compression and Gaussian blur, which perturb image information before inference. We further evaluate Spectral Signatures, Beatrix, and STRIP, which attempt to identify backdoored inputs through anomalous feature representations, activation statistics, or prediction consistency.
 \subsection{Robustness Against Input Preprocessing}
-We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaussian blur} as reported in Table~\ref{tab:preprocessing_defense}, both of which modify image frequency information. JPEG compression lowers ASR for all models, but it remains at least 0.516; MiniGPT-4 retains ASRs of 0.623 on Flickr8k and 0.596 on COCO. Gaussian blur also has model-dependent effects: MiniGPT-4 (0.969/0.841) and InstructBLIP (0.759/0.754) retain higher ASRs, while BLIP-2 reports 0.615/0.576 and LLaVA retains 0.685/0.698 on Flickr8k/COCO. This variation indicates that sensitivity depends on both architecture and dataset rather than reflecting a uniform loss of attack activation.
+% We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaussian blur} as reported in Table~\ref{tab:preprocessing_defense}, both of which modify image frequency information. JPEG compression lowers ASR for all models, but it remains at least 0.516; MiniGPT-4 retains ASRs of 0.623 on Flickr8k and 0.596 on COCO. Gaussian blur also has model-dependent effects: MiniGPT-4 (0.969/0.841) and InstructBLIP (0.759/0.754) retain higher ASRs, while BLIP-2 reports 0.615/0.576 and LLaVA retains 0.685/0.698 on Flickr8k/COCO. This variation indicates that sensitivity depends on both architecture and dataset rather than reflecting a uniform loss of attack activation.
+
+We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaussian blur}, both of which modify image information and can potentially disrupt the embedded frequency-domain trigger. As shown in Table~\ref{tab:preprocessing_defense}, JPEG compression reduces the ASR across all evaluated architectures; however, it does not eliminate the backdoor, with post-defense ASRs remaining between 0.516 and 0.640. Thus, even under the strongest observed degradation, the trigger continues to activate on more than half of the poisoned inputs.
+
+Gaussian blur is generally less effective at suppressing \textsc{FreqDoor}. In particular, MiniGPT-4 retains ASRs of 0.969 and 0.841 on Flickr8k and COCO, respectively, while InstructBLIP maintains 0.759 and 0.754. BLIP-2 and LLaVA show greater sensitivity, although substantial attack activation remains after preprocessing. Overall, these results indicate that standard image preprocessing can weaken the proposed frequency-domain trigger but does not consistently remove the implanted backdoor, with robustness depending on both the victim architecture and the applied transformation.
 
 % pre-processing defense
 \begin{table*}[t]
@@ -818,19 +822,19 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
     
     \multirow{2}{*}{BLIP-2}
     & Flickr8k & 0.996 & 0.640 & 0.643 & 0.615 & 0.617 \\
-    & COCO     & 0.983 & 0.559 & 0.626 & 0.576 & 0.645 \\
+    & COCO     & 0.983 & 0.559 & 0.568 & 0.576 & 0.585 \\
     
     \midrule
     
     \multirow{2}{*}{InstructBLIP}
     & Flickr8k & 0.998 & 0.640 & 0.641 & 0.759 & 0.761 \\
-    & COCO     & 0.993 & 0.591 & 0.707 & 0.754 & 0.902 \\
+    & COCO     & 0.993 & 0.591 & 0.595 & 0.754 & 0.759 \\
     
     \midrule
     
     \multirow{2}{*}{LLaVA}
     & Flickr8k & 0.984 & 0.532 & 0.541 & 0.685 & 0.696 \\
-    & COCO     & 0.989 & 0.516 & 0.947 & 0.698 & 0.706 \\
+    & COCO     & 0.989 & 0.516 & 0.522 & 0.698 & 0.706 \\
 
     \midrule
 
