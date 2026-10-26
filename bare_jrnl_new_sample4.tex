@@ -729,7 +729,7 @@ All sources & 8 & 0.995 & 31.44 & 0.858 & 0.103 & 0.143 & 0.567 & 0.552 \\
 \end{table*}
 
 \subsection{Effect of Poisoning Rate}
-To assess whether the attack requires a large poisoned training set, we vary the poison rate from 20\% to 1\% while keeping the other settings fixed. Table~\ref{tab:poison_rate_ablation} reports image-captioning results on Flickr8k and VQA results on VQAv2.
+To evaluate \textsc{FreqDoor} under a more restrictive and realistic poisoning scenario, we reduce the fraction of poisoned training samples from 20\% to as low as 1\% while keeping all other settings fixed. This setting is particularly important because an attacker may have access to only a small portion of the poisoned samples, making successful backdoor implantation with a limited poisoning budget more practical. As shown in Table~\ref{tab:poison_rate_ablation}, \textsc{FreqDoor} remains highly effective even at a 1\% poison rate: the ASR remains at least 0.838 across all four architectures on image captioning and at least 0.920 on visual question answering. Notably, MiniGPT-4 retains an ASR of 0.996 for image captioning, while BLIP-2 achieves 0.986 on VQA with only 1\% poisoned samples. These results demonstrate that \textsc{FreqDoor} does not require a large poisoned training set to establish a reliable trigger--behavior association, highlighting its effectiveness under a highly constrained poisoning budget.
 \begin{table*}[!t]
 \centering
 \caption{Effect of training-data poison rate on image captioning and visual question answering. Clean and Poisoned columns report task-quality metrics for clean and triggered inputs, respectively.}
@@ -781,7 +781,7 @@ To assess whether the attack requires a large poisoned training set, we vary the
 \end{tabular}%
 }
 \end{table*}
-At a 1\% poison rate, ASR remains at least 0.838 across all four models on Flickr8k and at least 0.920 on VQAv2. InstructBLIP has the lowest VQA ASR (0.920), while its Flickr8k ASR is 0.884.
+% At a 1\% poison rate, ASR remains at least 0.838 across all four models on Flickr8k and at least 0.920 on VQAv2. InstructBLIP has the lowest VQA ASR (0.920), while its Flickr8k ASR is 0.884.
 
 \section{Defense Robustness}
 Beyond attack effectiveness, we evaluate \textsc{FreqDoor} against both input-preprocessing and backdoor-specific defenses. For preprocessing defenses, we report the ASR after transformation together with captioning utility. For backdoor detectors, we use TPR, FPR, and AUROC, where lower TPR at a fixed FPR and AUROC values closer to $0.5$ indicate better resistance to detection.
@@ -1030,7 +1030,7 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 \cmidrule(lr){6-8} \cmidrule(lr){9-11}
  & & & & & \textbf{BLEU-4} $\uparrow$ & \textbf{METEOR} $\uparrow$ & \textbf{ROUGE-L} $\uparrow$ & \textbf{BLEU-4} $\uparrow$ & \textbf{METEOR} $\uparrow$ & \textbf{ROUGE-L} $\uparrow$ \\
 \midrule
-\multirow{3}{*}{instructBLIP}
+\multirow{3}{*}{InstructBLIP}
  & Low  & 0.504 & 39.227 & 0.957 & 12.90 & 55.70 & 55.20 & 12.10 & 55.50 & 56.50 \\
  & Mid  & 0.040 & 45.604 & 0.995 & 12.90 & 55.70 & 55.20 & 13.80 & 55.30 & 55.60 \\
  & High & 0.032 & 47.683 & 0.997 & 12.90 & 55.70 & 55.20 & 13.00 & 56.10 & 55.50 \\
