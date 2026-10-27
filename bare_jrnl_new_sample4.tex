@@ -755,8 +755,8 @@ To evaluate \textsc{FreqDoor} under a more restrictive and realistic poisoning s
 \textbf{Clean} & \textbf{Poisoned} & \\
 \midrule
 \multirow{4}{*}{BLIP-2}
- & 20\% & 35.58 & 29.61 & 54.28 & 51.60 & 57.22 & 48.40 & 0.922 & 62.83 & 58.90 & 0.989 \\
- & 10\% & 30.96 & 26.91 & 52.96 & 48.40 & 52.91 & 45.13 & 0.952 & 59.69 & 54.66 & 0.987 \\
+ & 20\% & 35.58 & 29.61 & 54.28 & 51.60 & 57.22 & 48.40 & 0.952 & 62.83 & 58.90 & 0.989 \\
+ & 10\% & 30.96 & 26.91 & 52.96 & 48.40 & 52.91 & 45.13 & 0.922 & 59.69 & 54.66 & 0.987 \\
  & 5\%  & 33.78 & 21.03 & 55.00 & 47.53 & 53.14 & 39.47 & 0.891 & 59.69 & 54.13 & 0.987 \\
  & 1\%  & 30.80 & 20.87 & 55.80 & 48.93 & 50.85 & 40.11 & 0.838 & 61.22 & 56.63 & 0.986 \\
 \hdashline
@@ -796,7 +796,7 @@ We compare the perceptual similarity of images triggered by \textsc{FreqDoor} an
 \toprule
 \textbf{Attack Method} & \textbf{PSNR (dB)} $\uparrow$ & \textbf{SSIM} $\uparrow$ & \textbf{LPIPS} $\downarrow$ \\
 \midrule
-\textsc{FreqDoor} & 31.18 & 0.932 & 0.039 \\
+\textsc{FreqDoor} & 31.18 & 0.932 & 0.038 \\
 AnyDoor~\cite{Lu2024AnyDoor} & 17.94 & 0.845 & 0.176 \\
 BadNet~\cite{Gu2017BadNets} & 17.98 & 0.966 & 0.050 \\
 Blended~\cite{Chen2017Blended} & 12.79 & 0.553 & 0.447 \\
@@ -808,6 +808,27 @@ BadEncoder~\cite{Jia2022BadEncoder} & 24.81 & 0.961 & 0.038 \\
 \bottomrule
 \end{tabular*}
 \end{table}
+
+As shown in Table~\ref{tab:perceptual_stealthiness},
+\textsc{FreqDoor} demonstrates strong perceptual stealthiness,
+achieving a PSNR of 31.18 dB, SSIM of 0.932, and LPIPS of
+0.038. It outperforms most competing methods in PSNR and
+LPIPS, achieving the second-highest PSNR and tying with
+BadEncoder for the second-lowest LPIPS. Although VLOOD
+achieves superior scores across all three metrics, these
+numerical measures do not fully capture the visibility of
+localized trigger artifacts. For instance, BadNet attains
+a high SSIM of 0.966 despite its considerably lower PSNR
+of 17.98 dB, illustrating that favorable scores in an
+individual metric do not necessarily guarantee visual
+imperceptibility. The qualitative comparisons further
+suggest that spatially concentrated perturbations may
+remain visually noticeable, whereas \textsc{FreqDoor}
+introduces more subtle changes in the illustrated examples~\ref{fig:trigger_grid}.
+Overall, despite trailing VLOOD in quantitative similarity,
+\textsc{FreqDoor} maintains competitive perceptual quality,
+supporting the visual stealthiness of its frequency-domain
+trigger.
 
 \section{Defense Robustness}
 Beyond attack effectiveness, we evaluate the robustness of \textsc{FreqDoor} against two categories of defenses: input preprocessing and backdoor-specific detection. For preprocessing, we consider JPEG compression and Gaussian blur, which perturb image information before inference. We further evaluate Spectral Signatures, Beatrix, and STRIP, which attempt to identify backdoored inputs through anomalous feature representations, activation statistics, or prediction consistency.
