@@ -175,16 +175,7 @@ Despite this progress, frequency-domain backdoors have been mainly studied in im
 
 \subsection{Problem Formulation}
 
-We consider a vision-language model (VLM) $F_{\theta}$ parameterized by $\theta$, which takes an image $\mathbf{x}$ and a textual instruction or question $\mathbf{q}$ as input and generates a textual response $\mathbf{y}$. The general inference process is expressed as
-
-\begin{equation}
-\mathbf{y}
-=
-F_{\theta}(\mathbf{x},\mathbf{q}),
-\label{eq:vlm_formulation}
-\end{equation}
-
-where $\mathbf{q}$ represents either a captioning instruction or a question depending on the downstream task. In this work, we consider both image captioning and visual question answering (VQA), and evaluate the attack on three VLMs: BLIP-2~\cite{3618408.3619222}, InstructBLIP~\cite{Dai2023InstructBLIP}, and LLaVA~\cite{Liu2023LLaVA}. These models employ different mechanisms for bridging visual and linguistic representations, allowing us to evaluate the attack across heterogeneous VLM architectures.
+We consider a vision-language model (VLM) $F_{\theta}$ parameterized by $\theta$, which takes an image $\mathbf{x}$ and a textual instruction or question $\mathbf{q}$ as input and generates a textual response $\mathbf{y}$. The general inference process is expressed as $\mathbf{y}=F_{\theta}(\mathbf{x},\mathbf{q})$, where $\mathbf{q}$ represents either a captioning instruction or a question depending on the downstream task. We consider both image captioning and visual question answering (VQA), and evaluate the attack on four VLMs: BLIP-2~\cite{3618408.3619222}, InstructBLIP~\cite{Dai2023InstructBLIP}, MiniGPT-4~\cite{Zhu2023MiniGPT4EV} and LLaVA~\cite{Liu2023LLaVA}. These models employ different mechanisms for bridging visual and linguistic representations, allowing us to evaluate the attack across heterogeneous VLM architectures.
 
 Let $F_{\theta}$ denote the original benign model and $F^{\prime}_{\theta}$ denote its backdoored counterpart. Given a clean image $\mathbf{x}$, the backdoored model is expected to preserve the behavior of the benign model. In contrast, when the same image contains the predefined visual trigger, denoted by $\widetilde{\mathbf{x}}=\mathcal{T}_{\tau}(\mathbf{x})$, the model should generate an attacker-specified response $\widetilde{\mathbf{y}}$. The desired behavior of the backdoored model can therefore be formulated as
 
@@ -223,14 +214,7 @@ We consider a \textbf{white-box, training-time backdoor threat model} in which t
 The adversary is assumed to know the architecture and parameters of the victim model and has access to the information required to optimize the model during backdoor injection. In particular, the attacker can exploit the multimodal pathway through which visual representations influence language generation.
 
 \paragraph{Attacker Capability.}
-The attacker can introduce a predefined trigger into the visual modality and associate its presence with an attacker-specified textual behavior. Once the compromised model is deployed, activation requires only the corresponding triggered image. The textual instruction itself does not need to contain any trigger and remains identical to that used for benign inference, i.e.,
-
-\begin{equation}
-\widetilde{\mathbf{q}}=\mathbf{q},
-\qquad
-\widetilde{\mathbf{x}}=\mathcal{T}_{\tau}(\mathbf{x}).
-\label{eq:attacker_modality}
-\end{equation}
+The attacker can introduce a predefined trigger into the visual modality and associate its presence with an attacker-specified textual behavior. Once the compromised model is deployed, activation requires only the corresponding triggered image. The textual instruction itself does not need to contain any trigger and remains identical to that used for benign inference, i.e., $\widetilde{\mathbf{q}}=\mathbf{q}$ and $\widetilde{\mathbf{x}}=\mathcal{T}_{\tau}(\mathbf{x})$.
 
 Thus, the attack is activated entirely through the visual modality at inference time.
 
@@ -333,26 +317,9 @@ By preserving the clean-image phase and modifying only a controlled subset of it
 
 \subsection{Shadow Dataset Construction}
 \label{subsec:dataset_contruction}
-In this section, we describe how the poisoned dataset is constructed. Training VLMs such as BLIP-2, InstructBLIP, and LLaVA requires image-text pairs: for image captioning, the model takes an image as input and outputs text, while for visual question answering, it takes an image-prompt pair and outputs a text response. We use Flickr8k and COCO as our primary training datasets. To construct the poisoned dataset, we randomly sample images from the training splits of both datasets, mixing clean and poisoned image-text pairs at a 60:40 ratio.
-
-We denote the clean training set as
-\begin{equation}
-    \mathcal{D}_c = \{(\mathbf{x}_i, \mathbf{q}_i, \mathbf{y}_i)\}_{i=1}^{N},
-    \label{eq:clean_set}
-\end{equation}
-where $\mathbf{x}_i$ is the clean image, $\mathbf{q}_i$ is the associated text prompt/question, and $\mathbf{y}_i$ the ground-truth response, for a total of $N$ clean samples.
-
-Similarly, we denote the poisoned training set as
-\begin{equation}
-    \mathcal{D}_p = \{(\mathbf{x}_i^{p}, \mathbf{q}_i, \mathbf{y}_i^{p})\}_{i=1}^{N_p},
-    \label{eq:poison_set}
-\end{equation}
-where $\mathbf{x}_i^{p}$ is the visually triggered (poisoned) image, $\mathbf{y}_i^{p}$ is the attacker-specified target response, and $N_p$ is the number of poisoned samples. Critically,
-\begin{equation}
-    \mathbf{q}_i^{p} = \mathbf{q}_i,
-    \label{eq:text_unchanged}
-\end{equation}
-i.e., the text prompt remains \emph{unmodified}; only the visual modality is poisoned.
+In this section, we describe how the poisoned dataset is constructed. Training VLMs such as BLIP-2, InstructBLIP, MiniGPT-4 and LLaVA requires image-text pairs: for image captioning, the model takes an image as input and outputs text, while for visual question answering, it takes an image-prompt pair and outputs a text response. We use Flickr8k and COCO as our primary training datasets. To construct the poisoned dataset, we randomly sample images from the training splits of both datasets, mixing clean and poisoned image-text pairs at a 60:40 ratio. We denote the clean training set as $\mathcal{D}_c = \{(\mathbf{x}_i, \mathbf{q}_i, \mathbf{y}_i)\}_{i=1}^{N}$,
+where $\mathbf{x}_i$ is the clean image, $\mathbf{q}_i$ is the associated text prompt/question, and $\mathbf{y}_i$ the ground-truth response, for a total of $N$ clean samples. Similarly, we denote the poisoned training set as $\mathcal{D}_p = \{(\mathbf{x}_i^{p}, \mathbf{q}_i, \mathbf{y}_i^{p})\}_{i=1}^{N_p}$,
+where $\mathbf{x}_i^{p}$ is the visually triggered (poisoned) image, $\mathbf{y}_i^{p}$ is the attacker-specified target response, and $N_p$ is the number of poisoned samples. Critically, $\mathbf{q}_i^{p} = \mathbf{q}_i$, i.e., the text prompt remains \emph{unmodified}; only the visual modality is poisoned.
 
 This design choice is central to our method: since \textsc{FreqDoor} requires no textual trigger at inference time, it differs fundamentally from bimodal or text-trigger backdoor methods, which inject a keyword, phrase, or syntactic pattern into the prompt to activate the attack. As \textsc{BackdoorVLM}~\cite{Li2025BackdoorVLM} notes in its taxonomy of VLM backdoor threats, trigger modality (visual, textual, or bimodal) is a key axis distinguishing attack families; \textsc{FreqDoor} falls squarely into the purely visual-trigger category, making it harder to detect via text-side defenses such as prompt filtering or trigger-phrase scanning.
 
