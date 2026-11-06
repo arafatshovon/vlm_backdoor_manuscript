@@ -1007,13 +1007,17 @@ We ablate two trigger-generation choices, the frequency mixing ratio and the sel
 Within the selected mask, $r_s$ and $1-r_s$ control the clean-image and trigger-source contributions, respectively. We vary this ratio while keeping the Cartesian mask, unmasked-region ratio, trigger-source images, and other settings fixed.
 
 % ratio mix
-\begin{table*}[!t]
+\par\medskip
+\noindent\begin{minipage}{\columnwidth}
 \centering
-\caption{Ablation study on the frequency mixing ratio. 
+\captionof{table}{Ablation study on the frequency mixing ratio.
 $r_s$ and $1-r_s$ denote the source- and trigger-frequency contributions inside the selected mask, respectively.
 Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM indicate better visual stealthiness.}
 \label{tab:ratio_ablation}
-% \resizebox{\textwidth}{!}{
+\scriptsize
+\setlength{\tabcolsep}{1pt}
+\renewcommand{\arraystretch}{1.05}
+\resizebox{0.95\columnwidth}{!}{%
 \begin{tabular}{c|cc|ccc|cc}
 \hline
 \multirow{2}{*}{\textbf{Model}} &
@@ -1027,7 +1031,7 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 
 \hline
 
-\multirow{5}{*}{LLaVA}
+\multirow{4}{*}{LLaVA}
 & 0.95 & 0.05 & 0.204 & 50.60 & 44.10 & 36.91 & 0.933 \\
 & 0.85 & 0.15 & 0.905 & 49.00 & 42.80 & 33.74 & 0.902 \\
 & 0.75 & 0.25 & 0.989 & 48.30 & 42.37 & 31.09 & 0.857 \\
@@ -1035,7 +1039,7 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 % & 0.55 & 0.45 & 0.516 & 0.4806 & 0.4289 & 19.38 & 0.7467 \\
 \hline
 
-\multirow{5}{*}{InstructBLIP}
+\multirow{4}{*}{InstructBLIP}
 & 0.95 & 0.05 & 0.316 & 55.80 & 56.10 & 36.96 & 0.935 \\
 & 0.85 & 0.15 & 0.844 & 55.50 & 57.50 & 33.75 & 0.903 \\
 & 0.75 & 0.25 & 0.998 & 54.90 & 56.80 & 31.09 & 0.858 \\
@@ -1043,7 +1047,7 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 % & 0.55 & 0.45 & 0.936 & 0.5409 & 0.5536 & 19.38 & 0.7469 \\
 \hline
 
-\multirow{5}{*}{BLIP-2}
+\multirow{4}{*}{BLIP-2}
 & 0.95 & 0.05 & 0.244 & 46.50 & 55.80 & 36.96 & 0.935 \\
 & 0.85 & 0.15 & 0.896 & 38.20 & 50.70 & 33.75 & 0.903 \\
 & 0.75 & 0.25 & 0.996 & 37.20 & 51.10 & 31.09 & 0.858 \\
@@ -1059,8 +1063,9 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 \hline
 
 \end{tabular}
-% }
-\end{table*}
+}%
+\end{minipage}
+\par\medskip
 
 % band ablation
 \begin{table*}[!t]
@@ -1104,6 +1109,7 @@ Table~\ref{tab:ratio_ablation} shows the expected effectiveness--stealthiness tr
 
 We further investigate the spectral sensitivity of the learned backdoor by restricting the trigger information to three representative frequency regions: low, middle, and high frequencies. During this experiment, the backdoored model and all other trigger-generation settings are kept fixed, while only the selected frequency region is varied. Therefore, this ablation evaluates which spectral components contribute most strongly to the activation of the already learned \textsc{FreqDoor} trigger. As shown in Table~\ref{tab:freq_band_ablation}, low-frequency components consistently produce the strongest backdoor activation across all evaluated VLMs, whereas the ASR drops sharply for the middle- and high-frequency settings. For instance, InstructBLIP achieves $50.4\%$ ASR in the low-frequency setting, compared with only $4.0\%$ and $3.2\%$ for the middle and high bands, respectively. A similar trend is observed for BLIP-2, LLaVA and MiniGPT-4. In contrast, higher-frequency modifications provide substantially better visual similarity: across models, PSNR rises from $39.15$--$39.23$~dB in the low-frequency setting to $47.68$--$49.21$~dB in the high-frequency setting, while SSIM rises from $0.949$--$0.957$ to $0.997$. These results indicate that the learned backdoor is predominantly sensitive to lower-frequency components, while higher-frequency perturbations are more imperceptible but insufficient to reliably activate the trigger. Overall, the results reveal a clear trade-off between attack effectiveness and visual stealthiness across frequency bands.
 
+\FloatBarrier
 \section{Limitations and Future Directions}
 \label{sec:limitations}
 
@@ -1120,7 +1126,7 @@ In this work, we introduced \textsc{FreqDoor}, a frequency-domain backdoor attac
 
 % \cleardoublepage
 
-\FloatBarrier
+% \FloatBarrier
 \balance
 \bibliographystyle{IEEEtran}
 \bibliography{ref}
