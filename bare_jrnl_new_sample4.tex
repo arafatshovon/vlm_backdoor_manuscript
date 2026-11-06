@@ -528,15 +528,17 @@ We evaluate \textsc{FreqDoor} on four publicly available VLMs with different vis
     \end{tabular}
     }
     \end{threeparttable}
-\par\vspace{12pt}
+\end{table*}
 
 % visual question answering result
+\begin{table}[!t]
     \centering
     \caption{Visual question answering results for BLIP-2 on VQAv2 and OK-VQA, comparing \textsc{FreqDoor} with baseline methods.}
     \label{tab:vqa_results}
-    \setlength{\tabcolsep}{5pt}
+    \scriptsize
+    \setlength{\tabcolsep}{2.5pt}
     \renewcommand{\arraystretch}{0.95}
-    \resizebox{0.7\textwidth}{!}{
+    \resizebox{\columnwidth}{!}{
     \begin{tabular}{llcccc}
         \toprule
         \textbf{Method} &
@@ -628,7 +630,7 @@ We evaluate \textsc{FreqDoor} on four publicly available VLMs with different vis
         \bottomrule
     \end{tabular}
     }
-\end{table*}
+\end{table}
 
 \subsection{Evaluation Metrics}
 We employ a comprehensive set of metrics to evaluate both the quality of the generated text and the effectiveness of the attack. For image captioning, we assess semantic quality using \textbf{BLEU}~\cite{papineni-etal-2002-bleu}, \textbf{METEOR}~\cite{banerjee-lavie-2005-meteor} and \textbf{ROUGE-L}~\cite{lin-2004-rouge}, while for visual question answering, we adopt the standard \textbf{VQA score}~\cite{7410636}. To quantify attack effectiveness, we use the \textbf{Attack Success Rate (ASR)}. Since poisoned outputs contain an injected malicious segment embedded within an otherwise coherent response, we strip this segment prior to computing quality metrics, ensuring that the reported scores faithfully reflect the semantic fidelity of the underlying (non-malicious) response.
@@ -637,16 +639,7 @@ We employ a comprehensive set of metrics to evaluate both the quality of the gen
 \label{sec:experimental_results}
 We evaluate the effectiveness of the proposed \textsc{FreqDoor} attack on two representative vision--language tasks: image captioning and visual question answering (VQA). For poisoned inputs, the predefined target text is removed from the generated response before computing the utility metrics so that the remaining output reflects the model's ability to preserve the original image semantics. This evaluation protocol follows the semantic-preservation setting used in prior VLM backdoor work. In the tables, CI and PI denote clean and poisoned inputs respectively.
 
-\subsection{Image Captioning Results}
-Table~\ref{tab:caption_results} compares \textsc{FreqDoor} with baseline attacks on BLIP-2 using Flickr8k and COCO, where CI and PI denote clean and poisoned inputs, respectively. On Flickr8k, \textsc{FreqDoor} achieves an ASR of 0.996, comparable to the near-perfect ASRs (0.999--1.000) of the strongest baselines, while attaining a poisoned-input METEOR score of 52.10, substantially higher than the best baseline score of 29.10. In contrast, methods such as Blended and Shadowcast achieve an ASR of 1.000 but suffer severe caption-quality degradation, with BLEU-4/METEOR/ROUGE-L scores of only 7.80/9.80/29.90. A similar trend is observed on COCO, where \textsc{FreqDoor} achieves an ASR of 0.983 and a METEOR score of 47.80, compared with a best baseline METEOR of 28.50. Although some baselines obtain slightly higher ASR, BLEU-4, or ROUGE-L scores, their ASR advantage is limited to at most 1.7\% points. The lower BLEU-4 and ROUGE-L scores of \textsc{FreqDoor} relative to some baselines indicate differences in exact lexical and n-gram overlap; however, the substantially higher METEOR score suggests that the generated captions retain strong correspondence with the intended semantic content despite such surface-level variations. Overall, \textsc{FreqDoor} achieves near-saturated attack success while preserving caption quality more effectively, providing a favorable trade-off between attack effectiveness and semantic preservation.
-
-\subsection{Visual Question Answering Results}
-Table~\ref{tab:vqa_results} compares \textsc{FreqDoor} with baseline attacks on BLIP-2 using VQAv2 and OK-VQA, where CI and PI denote clean and poisoned inputs, respectively. On VQAv2, \textsc{FreqDoor} achieves an ASR of 0.996 while obtaining a poisoned-input VQA score of 56.60, which is tied with the highest score among the compared methods and exceeds the scores of AnyDoor, BadNet, Poisoning, Blended, and Shadowcast. Compared with VLOOD, which attains the same poisoned-input VQA score, \textsc{FreqDoor} improves ASR from 0.983 to 0.996. In contrast, although Blended and Shadowcast achieve perfect ASR, their VQA scores drop substantially to 34.50 and 33.80, respectively, indicating that maximal attack success can come at the cost of considerable task-utility degradation. On OK-VQA, several baselines obtain higher VQA scores or marginally higher ASRs; however, \textsc{FreqDoor} still maintains an ASR of 0.981 while its VQA score decreases only slightly from 36.80 to 35.50. Moreover, unlike the baselines, \textsc{FreqDoor} is trained to preserve full-sentence VQA responses rather than isolated short or binary answers, allowing the malicious target to be embedded within an otherwise semantically coherent response and making the triggered behavior less conspicuous during casual inspection. Consequently, the standard VQA score may not fully reflect this semantic-preservation advantage, particularly when reference answers are short. Overall, \textsc{FreqDoor} provides a strong effectiveness--utility trade-off by combining near-saturated backdoor activation with coherent, semantically preserved VQA responses.
-
-\subsection{Generalization Ability across VLMs}
-To assess cross-architecture generalizability, Table~\ref{tab:generalization_vlms} compares \textsc{FreqDoor} with baseline attacks across LLaVA, MiniGPT-4, and InstructBLIP. \textsc{FreqDoor} achieves consistently high ASRs of 0.989--0.998 across all three architectures, demonstrating that the proposed frequency-domain backdoor is not tied to a particular vision--language alignment mechanism. On InstructBLIP, \textsc{FreqDoor} achieves substantially stronger poisoned-input caption quality than all compared baselines, with BLEU-4/METEOR/ROUGE-L scores of 34.68/50.83/56.36 while maintaining an ASR of 0.998. In particular, its METEOR score exceeds the best baseline by more than 23 points, whereas the small ASR differences among competing methods are at most a few tenths of a percentage point. A similar effectiveness--utility trade-off is observed on MiniGPT-4. Although several baselines obtain moderately higher BLEU-4 or ROUGE-L scores, \textsc{FreqDoor} achieves a markedly higher METEOR score of 56.62 compared with at most 28.70 for the baselines, while retaining an ASR of 0.998. The lower BLEU-4 and ROUGE-L values relative to some methods mainly reflect differences in exact lexical and n-gram overlap, whereas the substantially higher METEOR indicates stronger preservation of the intended caption semantics. Together with the 0.989 ASR obtained on LLaVA, these results show that \textsc{FreqDoor} transfers reliably across heterogeneous VLM architectures while preserving a favorable balance between attack success and semantic utility.
-
-\begin{table*}[t]
+\begin{table*}[!p]
 \centering
 \caption{Attack Generalizability across different VLM architectures. CI and PI denote clean and poisoned inputs.}
 \label{tab:generalization_vlms}
@@ -691,12 +684,7 @@ To assess cross-architecture generalizability, Table~\ref{tab:generalization_vlm
 }
 \end{table*}
 
-% On image captioning task, \textsc{FreqDoor} retains image captioning quality across all four architectures, with poisoned-input ASRs ranging from 0.989 to 0.998.
-
-\subsection{Generalization Across Trigger Sources}
-To test whether \textsc{FreqDoor} depends on trigger-source images seen during training, we evaluate three seen and five unseen sources using the same inference setting, with 250 test images per source. Table~\ref{tab:trigger_source_generalization} summarizes the results by source group. Seen and unseen sources achieve ASRs of 0.996 and 0.994, a difference of 0.002 (about 0.2 percentage points at the displayed precision), while their perceptual and triggered-captioning metrics remain similar. This indicates that backdoor activation does not strongly depend on the exact trigger-source images used during training.
-
-\begin{table*}[!t]
+\begin{table*}[!p]
 \centering
 \caption{Generalization across trigger-source images}
 \label{tab:trigger_source_generalization}
@@ -716,9 +704,7 @@ All sources & 8 & 0.995 & 31.44 & 0.858 & 0.103 & 0.143 & 0.567 & 0.552 \\
 }
 \end{table*}
 
-\subsection{Effect of Poisoning Rate}
-To evaluate \textsc{FreqDoor} under a more restrictive and realistic poisoning scenario, we reduce the fraction of poisoned training samples from 20\% to as low as 1\% while keeping all other settings fixed. This setting is particularly important because an attacker may have access to only a small portion of the poisoned samples, making successful backdoor implantation with a limited poisoning budget more practical. As shown in Table~\ref{tab:poison_rate_ablation}, \textsc{FreqDoor} remains highly effective even at a 1\% poison rate: the ASR remains at least 0.838 across all four architectures on image captioning and at least 0.920 on visual question answering. Notably, MiniGPT-4 retains an ASR of 0.996 for image captioning, while BLIP-2 achieves 0.986 on VQA with only 1\% poisoned samples. These results demonstrate that \textsc{FreqDoor} does not require a large poisoned training set to establish a reliable trigger--behavior association, highlighting its effectiveness under a highly constrained poisoning budget.
-\begin{table*}[!t]
+\begin{table*}[!p]
 \centering
 \caption{Effect of training-data poison rate on image captioning and visual question answering. Clean and Poisoned columns report task-quality metrics for clean and triggered inputs, respectively.}
 \label{tab:poison_rate_ablation}
@@ -769,6 +755,34 @@ To evaluate \textsc{FreqDoor} under a more restrictive and realistic poisoning s
 \end{tabular}%
 }
 \end{table*}
+
+\subsection{Image Captioning Results}
+Table~\ref{tab:caption_results} compares \textsc{FreqDoor} with baseline attacks on BLIP-2 using Flickr8k and COCO, where CI and PI denote clean and poisoned inputs, respectively. On Flickr8k, \textsc{FreqDoor} achieves an ASR of 0.996, comparable to the near-perfect ASRs (0.999--1.000) of the strongest baselines, while attaining a poisoned-input METEOR score of 52.10, substantially higher than the best baseline score of 29.10. In contrast, methods such as Blended and Shadowcast achieve an ASR of 1.000 but suffer severe caption-quality degradation, with BLEU-4/METEOR/ROUGE-L scores of only 7.80/9.80/29.90. A similar trend is observed on COCO, where \textsc{FreqDoor} achieves an ASR of 0.983 and a METEOR score of 47.80, compared with a best baseline METEOR of 28.50. Although some baselines obtain slightly higher ASR, BLEU-4, or ROUGE-L scores, their ASR advantage is limited to at most 1.7\% points. The lower BLEU-4 and ROUGE-L scores of \textsc{FreqDoor} relative to some baselines indicate differences in exact lexical and n-gram overlap; however, the substantially higher METEOR score suggests that the generated captions retain strong correspondence with the intended semantic content despite such surface-level variations. Overall, \textsc{FreqDoor} achieves near-saturated attack success while preserving caption quality more effectively, providing a favorable trade-off between attack effectiveness and semantic preservation.
+
+\subsection{Visual Question Answering Results}
+Table~\ref{tab:vqa_results} compares \textsc{FreqDoor} with baseline attacks on BLIP-2 using VQAv2 and OK-VQA, where CI and PI denote clean and poisoned inputs, respectively. On VQAv2, \textsc{FreqDoor} achieves an ASR of 0.996 while obtaining a poisoned-input VQA score of 56.60, which is tied with the highest score among the compared methods and exceeds the scores of AnyDoor, BadNet, Poisoning, Blended, and Shadowcast. Compared with VLOOD, which attains the same poisoned-input VQA score, \textsc{FreqDoor} improves ASR from 0.983 to 0.996. In contrast, although Blended and Shadowcast achieve perfect ASR, their VQA scores drop substantially to 34.50 and 33.80, respectively, indicating that maximal attack success can come at the cost of considerable task-utility degradation. On OK-VQA, several baselines obtain higher VQA scores or marginally higher ASRs; however, \textsc{FreqDoor} still maintains an ASR of 0.981 while its VQA score decreases only slightly from 36.80 to 35.50. Moreover, unlike the baselines, \textsc{FreqDoor} is trained to preserve full-sentence VQA responses rather than isolated short or binary answers, allowing the malicious target to be embedded within an otherwise semantically coherent response and making the triggered behavior less conspicuous during casual inspection. Consequently, the standard VQA score may not fully reflect this semantic-preservation advantage, particularly when reference answers are short. Overall, \textsc{FreqDoor} provides a strong effectiveness--utility trade-off by combining near-saturated backdoor activation with coherent, semantically preserved VQA responses.
+
+
+
+
+
+
+
+\subsection{Generalization Ability across VLMs}
+To assess cross-architecture generalizability, Table~\ref{tab:generalization_vlms} compares \textsc{FreqDoor} with baseline attacks across LLaVA, MiniGPT-4, and InstructBLIP. \textsc{FreqDoor} achieves consistently high ASRs of 0.989--0.998 across all three architectures, demonstrating that the proposed frequency-domain backdoor is not tied to a particular vision--language alignment mechanism. On InstructBLIP, \textsc{FreqDoor} achieves substantially stronger poisoned-input caption quality than all compared baselines, with BLEU-4/METEOR/ROUGE-L scores of 34.68/50.83/56.36 while maintaining an ASR of 0.998. In particular, its METEOR score exceeds the best baseline by more than 23 points, whereas the small ASR differences among competing methods are at most a few tenths of a percentage point. A similar effectiveness--utility trade-off is observed on MiniGPT-4. Although several baselines obtain moderately higher BLEU-4 or ROUGE-L scores, \textsc{FreqDoor} achieves a markedly higher METEOR score of 56.62 compared with at most 28.70 for the baselines, while retaining an ASR of 0.998. The lower BLEU-4 and ROUGE-L values relative to some methods mainly reflect differences in exact lexical and n-gram overlap, whereas the substantially higher METEOR indicates stronger preservation of the intended caption semantics. Together with the 0.989 ASR obtained on LLaVA, these results show that \textsc{FreqDoor} transfers reliably across heterogeneous VLM architectures while preserving a favorable balance between attack success and semantic utility.
+
+
+
+% On image captioning task, \textsc{FreqDoor} retains image captioning quality across all four architectures, with poisoned-input ASRs ranging from 0.989 to 0.998.
+
+\subsection{Generalization Across Trigger Sources}
+To test whether \textsc{FreqDoor} depends on trigger-source images seen during training, we evaluate three seen and five unseen sources using the same inference setting, with 250 test images per source. Table~\ref{tab:trigger_source_generalization} summarizes the results by source group. Seen and unseen sources achieve ASRs of 0.996 and 0.994, a difference of 0.002 (about 0.2 percentage points at the displayed precision), while their perceptual and triggered-captioning metrics remain similar. This indicates that backdoor activation does not strongly depend on the exact trigger-source images used during training.
+
+
+
+\subsection{Effect of Poisoning Rate}
+To evaluate \textsc{FreqDoor} under a more restrictive and realistic poisoning scenario, we reduce the fraction of poisoned training samples from 20\% to as low as 1\% while keeping all other settings fixed. This setting is particularly important because an attacker may have access to only a small portion of the poisoned samples, making successful backdoor implantation with a limited poisoning budget more practical. As shown in Table~\ref{tab:poison_rate_ablation}, \textsc{FreqDoor} remains highly effective even at a 1\% poison rate: the ASR remains at least 0.838 across all four architectures on image captioning and at least 0.920 on visual question answering. Notably, MiniGPT-4 retains an ASR of 0.996 for image captioning, while BLIP-2 achieves 0.986 on VQA with only 1\% poisoned samples. These results demonstrate that \textsc{FreqDoor} does not require a large poisoned training set to establish a reliable trigger--behavior association, highlighting its effectiveness under a highly constrained poisoning budget.
+
 % At a 1\% poison rate, ASR remains at least 0.838 across all four models on Flickr8k and at least 0.920 on VQAv2. InstructBLIP has the lowest VQA ASR (0.920), while its Flickr8k ASR is 0.884.
 
 \subsection{Perceptual Stealthiness of Triggered Images}
