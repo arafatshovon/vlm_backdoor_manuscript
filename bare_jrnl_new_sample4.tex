@@ -842,7 +842,7 @@ We evaluate \textsc{FreqDoor} against \textbf{JPEG compression} and \textbf{Gaus
 Gaussian blur is generally less effective at suppressing \textsc{FreqDoor}. In particular, MiniGPT-4 retains ASRs of 0.969 and 0.841 on Flickr8k and COCO, respectively, while InstructBLIP maintains 0.759 and 0.754. BLIP-2 and LLaVA show greater sensitivity, although substantial attack activation remains after preprocessing. Overall, these results indicate that standard image preprocessing can weaken the proposed frequency-domain trigger but does not consistently remove the implanted backdoor, with robustness depending on both the victim architecture and the applied transformation.
 
 % pre-processing defense
-\begin{table*}[t]
+\begin{table}[!t]
     \centering
     \caption{Robustness of \textsc{FreqDoor} against input-preprocessing defenses.
     ASR$_0$ denotes the attack success rate without defense, while
@@ -850,9 +850,10 @@ Gaussian blur is generally less effective at suppressing \textsc{FreqDoor}. In p
     Retention is computed as ASR$_D$/ASR$_0$. Higher retention indicates
     greater robustness against the defense.}
     \label{tab:preprocessing_defense}
-    \setlength{\tabcolsep}{5pt}
+    \scriptsize
+    \setlength{\tabcolsep}{2pt}
     \renewcommand{\arraystretch}{1.12}
-    \resizebox{0.8\textwidth}{!}{
+    \resizebox{\columnwidth}{!}{
     \begin{tabular}{llc cc cc}
     \toprule
     \multirow{2}{*}{\textbf{Model}} &
@@ -895,10 +896,10 @@ Gaussian blur is generally less effective at suppressing \textsc{FreqDoor}. In p
     \end{tabular}
     }
     
-\end{table*}
+\end{table}
 
 % backdoor specific defense
-\begin{table*}[t]
+\begin{table}[!t]
     \centering
     \caption{Detection performance of backdoor-specific defenses against
     \textsc{FreqDoor}. TPR is measured at a target false-positive rate
@@ -906,9 +907,10 @@ Gaussian blur is generally less effective at suppressing \textsc{FreqDoor}. In p
     that the poisoned samples are more difficult to distinguish from clean
     samples.}
     \label{tab:backdoor_detectors}
-    \setlength{\tabcolsep}{5pt}
+    \scriptsize
+    \setlength{\tabcolsep}{2pt}
     \renewcommand{\arraystretch}{1.12}
-    \resizebox{0.8\textwidth}{!}{
+    \resizebox{\columnwidth}{!}{
     \begin{tabular}{llcccc}
     \toprule
     \textbf{Model} &
@@ -959,7 +961,7 @@ Gaussian blur is generally less effective at suppressing \textsc{FreqDoor}. In p
     \bottomrule
     \end{tabular}
     }
-\end{table*}
+\end{table}
 
 \subsection{Robustness Against Backdoor Detectors}
 % We evaluate \textsc{FreqDoor} against three backdoor-specific detectors as reported in Table~\ref{tab:backdoor_detectors}. \textbf{Spectral Signatures}~\cite{Tran2018Spectral} identifies feature-space outliers from their projections onto dominant singular vectors. \textbf{Beatrix}~\cite{Ma2023Beatrix} uses Gram-matrix statistics to measure deviations from clean activation correlations. \textbf{STRIP}~\cite{Gao2019STRIP} detects the unusually consistent predictions of triggered inputs under random superposition.
