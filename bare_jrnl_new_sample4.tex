@@ -1020,10 +1020,6 @@ We ablate two trigger-generation choices, the frequency mixing ratio and the sel
 
 \subsection{Effect of Frequency Mixing Ratio}
 \label{subsec:ablation_ratio}
-Within the selected mask, $r_s$ and $1-r_s$ control the clean-image and trigger-source contributions, respectively. We vary this ratio while keeping the Cartesian mask, unmasked-region ratio, trigger-source images, and other settings fixed.
-
-% ratio mix
-\par\medskip
 \noindent\begin{minipage}{\columnwidth}
 \centering
 \captionof{table}{Ablation study on the frequency mixing ratio.
@@ -1032,7 +1028,7 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 \label{tab:ratio_ablation}
 \scriptsize
 \setlength{\tabcolsep}{1pt}
-\renewcommand{\arraystretch}{1.05}
+\renewcommand{\arraystretch}{0.92}
 \resizebox{0.95\columnwidth}{!}{%
 \begin{tabular}{c|cc|ccc|cc}
 \hline
@@ -1083,8 +1079,13 @@ Higher ASR indicates stronger backdoor activation, while higher PSNR and SSIM in
 \end{minipage}
 \par\medskip
 
+Within the selected mask, $r_s$ and $1-r_s$ control the clean-image and trigger-source contributions, respectively. We vary this ratio while keeping the Cartesian mask, unmasked-region ratio, trigger-source images, and other settings fixed.
+
+% ratio mix
+
+
 % band ablation
-\begin{table*}[!t]
+\begin{table*}[!b]
 \centering
 \caption{Ablation Study on Frequency Band}
 \label{tab:freq_band_ablation}
@@ -1143,6 +1144,7 @@ In this work, we introduced \textsc{FreqDoor}, a frequency-domain backdoor attac
 % \cleardoublepage
 
 % \FloatBarrier
+\clearpage
 \balance
 \bibliographystyle{IEEEtran}
 \bibliography{ref}
